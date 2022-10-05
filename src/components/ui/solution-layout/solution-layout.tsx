@@ -1,10 +1,11 @@
-import React from "react";
+import React , {ReactNode} from "react";
 import { ReturnButton } from "../return-button/return-button";
 import { Link } from "react-router-dom";
 import styles from "./solution-layout.module.css";
 
 interface SolutionLayoutProps {
   title: string;
+  children?: ReactNode;
   extraClass?: string;
 }
 
