@@ -8,12 +8,13 @@ import { delay } from "../../utils/delay";
 import { DELAY_IN_MS } from "../../constants/delays";
 import styles from "./string-page.module.css";
 import { ElementStates } from "../../types/element-states";
+import { changeColor } from "../../utils/change-color";
 import { TChar } from "../../types/char";
 
 export const StringPage: FC = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [charArr, setCharArr] = useState<TChar[]>([]);
-  const [inProgress, setInProgress] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [charsArr, setCharArr] = useState<TChar[]>([]);
+  const [inProgress, setInProgress] = useState<boolean>(false);
   
   const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -22,31 +23,28 @@ export const StringPage: FC = () => {
 
   const reverse = async (inputValue: string) => {
 
-    const charsArr: TChar[] = inputValue.split("").map((item) => {
+    const newCharsArr: TChar[] = inputValue.split("").map((item) => {
       return { char: item, state: ElementStates.Default };
     });
 
     setInProgress(true);
 
     let start: number = 0;
-    let end: number = charsArr.length - 1;
+    let end: number = newCharsArr.length - 1;
 
     while (end >= start) {
       if (end === start) {
         await delay(DELAY_IN_MS);
-        charsArr[start].state = ElementStates.Modified;
-        charsArr[end].state = ElementStates.Modified;
-        setCharArr([...charsArr]);
+        changeColor(newCharsArr, start, end, ElementStates.Modified)
+        setCharArr([...newCharsArr]);
         await delay(DELAY_IN_MS);
       } else {
-        charsArr[start].state = ElementStates.Changing;
-        charsArr[end].state = ElementStates.Changing;
-        setCharArr([...charsArr]);
+        changeColor(newCharsArr, start, end, ElementStates.Changing)
+        setCharArr([...newCharsArr]);
         await delay(DELAY_IN_MS);
-        swap(charsArr, start, end);
-        charsArr[start].state = ElementStates.Modified;
-        charsArr[end].state = ElementStates.Modified;
-        setCharArr([...charsArr]);
+        swap(newCharsArr, start, end);
+        changeColor(newCharsArr, start, end, ElementStates.Modified)
+        setCharArr([...newCharsArr]);
         await delay(DELAY_IN_MS);
       }
 
@@ -75,8 +73,8 @@ export const StringPage: FC = () => {
         />
       </div>
       <ul className={styles.circles}>
-        {!!charArr &&
-          charArr.map((item, index) => {
+        {!!charsArr &&
+          charsArr.map((item, index) => {
             return (
               <Circle
                 key={index}
