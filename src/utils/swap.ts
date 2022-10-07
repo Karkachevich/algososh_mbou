@@ -1,5 +1,7 @@
+import { TChar } from "../types/char";
+
 export const swap = (
-  arr: string[],
+  arr: TChar[],
   firstIndex: number,
   secondIndex: number
 ): void => {
