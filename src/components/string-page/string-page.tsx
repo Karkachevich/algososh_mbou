@@ -13,7 +13,7 @@ import { TChar } from "../../types/char";
 
 export const StringPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [charsArr, setCharArr] = useState<TChar[]>([]);
+  const [charsArr, setChasrArr] = useState<TChar[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
   
   const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
@@ -36,15 +36,15 @@ export const StringPage: FC = () => {
       if (end === start) {
         await delay(DELAY_IN_MS);
         changeColor(newCharsArr, start, end, ElementStates.Modified)
-        setCharArr([...newCharsArr]);
+        setChasrArr([...newCharsArr]);
         await delay(DELAY_IN_MS);
       } else {
         changeColor(newCharsArr, start, end, ElementStates.Changing)
-        setCharArr([...newCharsArr]);
+        setChasrArr([...newCharsArr]);
         await delay(DELAY_IN_MS);
         swap(newCharsArr, start, end);
         changeColor(newCharsArr, start, end, ElementStates.Modified)
-        setCharArr([...newCharsArr]);
+        setChasrArr([...newCharsArr]);
         await delay(DELAY_IN_MS);
       }
 
