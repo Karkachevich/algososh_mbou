@@ -5,7 +5,7 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { swap } from "../../utils/swap";
 import { delay } from "../../utils/delay";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS } from "../../constants/delays";
 import styles from "./string-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
@@ -33,20 +33,21 @@ export const StringPage: FC = () => {
 
     while (end >= start) {
       if (end === start) {
+        await delay(DELAY_IN_MS);
         charsArr[start].state = ElementStates.Modified;
         charsArr[end].state = ElementStates.Modified;
         setCharArr([...charsArr]);
-        await delay(SHORT_DELAY_IN_MS);
+        await delay(DELAY_IN_MS);
       } else {
         charsArr[start].state = ElementStates.Changing;
         charsArr[end].state = ElementStates.Changing;
         setCharArr([...charsArr]);
-        await delay(SHORT_DELAY_IN_MS);
+        await delay(DELAY_IN_MS);
         swap(charsArr, start, end);
         charsArr[start].state = ElementStates.Modified;
         charsArr[end].state = ElementStates.Modified;
         setCharArr([...charsArr]);
-        await delay(SHORT_DELAY_IN_MS);
+        await delay(DELAY_IN_MS);
       }
 
       start++;
@@ -70,6 +71,7 @@ export const StringPage: FC = () => {
           text="Развернуть"
           extraClass={styles.button}
           onClick={() => reverse(inputValue)}
+          isLoader={inProgress}
         />
       </div>
       <ul className={styles.circles}>
