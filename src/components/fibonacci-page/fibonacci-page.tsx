@@ -4,10 +4,13 @@ import styles from "./fibonacci-page.module.css";
 import { Input } from "../ui/input/input";
 import { Circle } from "../ui/circle/circle";
 import { Button } from "../ui/button/button";
+import { fib } from "../../utils/fibonacci";
+import { delay } from "../../utils/delay";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
-
+  const [numbersArr, setNumberArr] = useState<number[]>([])
   const [inProgress, setInProgress] = useState<boolean>(false);
 
   const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
@@ -15,7 +18,19 @@ export const FibonacciPage: React.FC = () => {
     setInputValue(element);
   };
 
-  
+  const fibonacci = async (inputValue: string) => {
+    const value = Number(inputValue);
+    const arr: number[] = fib(value);
+    const newArr: number[] = [];
+    for(let num of arr) {
+      newArr.push(num);
+      setNumberArr([...newArr]);
+      await delay(DELAY_IN_MS);
+    }
+   
+  }
+
+
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
@@ -25,11 +40,16 @@ export const FibonacciPage: React.FC = () => {
           max={19}
           extraClass={styles.input}
           isLimitText={true}
+          value={inputValue}
           onChange={onChange}
         />
-        <Button text="Развернуть" extraClass={styles.button} />
+        <Button text="Развернуть" extraClass={styles.button} onClick={()=>fibonacci(inputValue)}/>
       </div>
-      <ul className={styles.circles}>{inputValue && <Circle />}</ul>
+      <ul className={styles.circles}>{
+        numbersArr.map((item, index) => {
+        return  <Circle key={index} letter={item.toString()} index={index}/>
+      })}
+      </ul>
     </SolutionLayout>
   );
 };
