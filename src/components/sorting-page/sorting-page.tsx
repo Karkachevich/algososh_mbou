@@ -3,15 +3,26 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
+import styles from "./sorting-page.module.css";
 
 export const SortingPage: React.FC = () => {
   return (
     <SolutionLayout title="Сортировка массива">
-      <RadioInput label="Выбор"/>
-      <RadioInput label="Пузырёк"/>
-      <Button text="По возрастанию" sorting={Direction.Ascending}/>
-      <Button text="По убыванию" sorting={Direction.Descending}/>
-      <Button text="Новый массив"/>
+      <div className={styles.container}>
+        <RadioInput label="Выбор" extraClass={styles.radio} />
+        <RadioInput label="Пузырёк" extraClass={styles.radio} />
+        <Button
+          text="По возрастанию"
+          sorting={Direction.Ascending}
+          extraClass={styles.button}
+        />
+        <Button
+          text="По убыванию"
+          sorting={Direction.Descending}
+          extraClass={styles.button}
+        />
+        <Button text="Новый массив" extraClass="ml-40" />
+      </div>
     </SolutionLayout>
   );
 };
