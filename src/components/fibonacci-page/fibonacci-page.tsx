@@ -20,10 +20,13 @@ export const FibonacciPage: React.FC = () => {
 
   const fibonacci = async (inputValue: string) => {
     const value = Number(inputValue);
-    const arr: number[] = fib(value);
+    if (value <= 0 || value > 19) {
+      return 0;
+    }
+    const arrFibNums: number[] = fib(value);
     const newArr: number[] = [];
     setInProgress(true);
-    for (let num of arr) {
+    for (let num of arrFibNums) {
       newArr.push(num);
       setNumberArr([...newArr]);
       await delay(DELAY_IN_MS);
@@ -51,7 +54,14 @@ export const FibonacciPage: React.FC = () => {
       </div>
       <ul className={styles.circles}>
         {numbersArr.map((item, index) => {
-          return <Circle key={index} letter={item.toString()} index={index} extraClass={styles.circle}/>;
+          return (
+            <Circle
+              key={index}
+              letter={item.toString()}
+              index={index}
+              extraClass={styles.circle}
+            />
+          );
         })}
       </ul>
     </SolutionLayout>
