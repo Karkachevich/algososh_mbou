@@ -1,15 +1,27 @@
 .container {
-    display: flex;
-    margin: 0 auto;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .radio {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 .button {
-    margin-right: 12px;
+  margin-right: 12px;
+}
+
+.columns {
+  display: flex;
+  margin: 48px auto auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.column {
+  margin-right: 10px;
 }
