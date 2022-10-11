@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FC} from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
@@ -6,7 +6,9 @@ import { Direction } from "../../types/direction";
 import styles from "./sorting-page.module.css";
 import { Column } from "../ui/column/column";
 
-export const SortingPage: React.FC = () => {
+export const SortingPage: FC = () => {
+
+  
   return (
     <SolutionLayout title="Сортировка массива">
       <div className={styles.container}>
