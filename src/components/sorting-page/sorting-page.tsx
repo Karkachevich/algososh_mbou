@@ -21,7 +21,7 @@ export const SortingPage: FC = () => {
   };
 
   const onClickSort = () => {
-    selectionSort(numberArr, setNumberArr);
+    selectionSort(numberArr, setNumberArr, 'descending');
   };
 
   return (
