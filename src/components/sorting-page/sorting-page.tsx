@@ -1,14 +1,20 @@
-import React, {FC} from "react";
+import React, { FC, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import styles from "./sorting-page.module.css";
+import { TColumn } from "../../types/column";
 import { Column } from "../ui/column/column";
+import { randomArr } from "../../utils/random-array";
 
 export const SortingPage: FC = () => {
+  const [numberArr, setNumberArr] = useState<TColumn[]>([]);
 
-  
+  const onClickNewArr = () => {
+    setNumberArr(randomArr())
+  }
+
   return (
     <SolutionLayout title="Сортировка массива">
       <div className={styles.container}>
@@ -24,13 +30,21 @@ export const SortingPage: FC = () => {
           sorting={Direction.Descending}
           extraClass={styles.button}
         />
-        <Button text="Новый массив" extraClass="ml-40" />
+        <Button text="Новый массив" extraClass="ml-40" onClick={()=>{onClickNewArr()}}/>
       </div>
       <div className={styles.columns}>
-      <Column index={100} extraClass={styles.column}/>
-      <Column index={10}/>
+        {!!numberArr &&
+          numberArr.map((item, index) => {
+            return (
+              <Column
+                key={index}
+                index={item.number}
+                state={item.state}
+                extraClass={styles.column}
+              />
+            );
+          })}
       </div>
-      
     </SolutionLayout>
   );
 };
