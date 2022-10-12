@@ -12,7 +12,9 @@ import { bubbleSort } from "../../utils/bubble-sorting";
 
 export const SortingPage: FC = () => {
   const [numberArr, setNumberArr] = useState<TColumn[]>([]);
-  const [sortMode, setSortMode] = useState<string>("");
+  const [sortMode, setSortMode] = useState<string>("selection");
+  const [inProgressAscen, setInProgressAscen] = useState<boolean>(false);
+  const [inProgressDescen, setInProgressDescen] = useState<boolean>(false);
 
   const onClickNewArr = () => {
     setNumberArr(randomArr());
@@ -20,21 +22,20 @@ export const SortingPage: FC = () => {
 
   const onClickSortDescending = () => {
     if (sortMode === "selection") {
-      selectionSort(numberArr, setNumberArr, "descending");
+      selectionSort(numberArr, setNumberArr, setInProgressDescen, "descending");
     }
-
     if (sortMode === "bubble") {
-      bubbleSort(numberArr, setNumberArr, "descending");
+      bubbleSort(numberArr, setNumberArr, setInProgressDescen, "descending");
     }
   };
 
   const onClickSortAscending = () => {
     if (sortMode === "selection") {
-      selectionSort(numberArr, setNumberArr, "ascending");
+      selectionSort(numberArr, setNumberArr, setInProgressAscen, "ascending");
     }
 
     if (sortMode === "bubble") {
-      bubbleSort(numberArr, setNumberArr, "ascending");
+      bubbleSort(numberArr, setNumberArr, setInProgressAscen, "ascending");
     }
   };
 
@@ -62,6 +63,8 @@ export const SortingPage: FC = () => {
           onClick={() => {
             onClickSortAscending();
           }}
+          isLoader={inProgressAscen}
+          disabled={inProgressDescen}
         />
         <Button
           text="По убыванию"
@@ -70,6 +73,8 @@ export const SortingPage: FC = () => {
           onClick={() => {
             onClickSortDescending();
           }}
+          isLoader={inProgressDescen}
+          disabled={inProgressAscen}
         />
         <Button
           text="Новый массив"
@@ -77,6 +82,7 @@ export const SortingPage: FC = () => {
           onClick={() => {
             onClickNewArr();
           }}
+          disabled={inProgressAscen || inProgressDescen}
         />
       </div>
       <div className={styles.columns}>
