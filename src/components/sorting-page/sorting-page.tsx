@@ -7,10 +7,6 @@ import styles from "./sorting-page.module.css";
 import { TColumn } from "../../types/column";
 import { Column } from "../ui/column/column";
 import { randomArr } from "../../utils/random-array";
-import { delay } from "../../utils/delay";
-import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { swap } from "../../utils/swap";
-import { ElementStates } from "../../types/element-states";
 import { selectionSort } from "../../utils/selection-sorting";
 import { bubbleSort } from "../../utils/bubble-sorting";
 
@@ -26,7 +22,7 @@ export const SortingPage: FC = () => {
   };
 
   const onClickSortAscending = () => {
-    bubbleSort(numberArr, setNumberArr)
+    bubbleSort(numberArr, setNumberArr , "ascending")
   };
 
   
