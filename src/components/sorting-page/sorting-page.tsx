@@ -22,7 +22,12 @@ export const SortingPage: FC = () => {
 
   const onClickSortDescending = () => {
     if (sortMode === "selection") {
-      selectionSort(numberArr, setNumberArr, setInProgressDescent, "descending");
+      selectionSort(
+        numberArr,
+        setNumberArr,
+        setInProgressDescent,
+        "descending"
+      );
     }
     if (sortMode === "bubble") {
       bubbleSort(numberArr, setNumberArr, setInProgressDescent, "descending");
