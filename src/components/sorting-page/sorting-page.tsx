@@ -13,16 +13,29 @@ import { bubbleSort } from "../../utils/bubble-sorting";
 export const SortingPage: FC = () => {
   const [numberArr, setNumberArr] = useState<TColumn[]>([]);
   const [sortMode, setSortMode] = useState<string>("");
+
   const onClickNewArr = () => {
     setNumberArr(randomArr());
   };
 
   const onClickSortDescending = () => {
-    selectionSort(numberArr, setNumberArr, "descending");
+    if (sortMode === "selection") {
+      selectionSort(numberArr, setNumberArr, "descending");
+    }
+
+    if (sortMode === "bubble") {
+      bubbleSort(numberArr, setNumberArr, "descending");
+    }
   };
 
   const onClickSortAscending = () => {
-    bubbleSort(numberArr, setNumberArr, "ascending");
+    if (sortMode === "selection") {
+      selectionSort(numberArr, setNumberArr, "ascending");
+    }
+
+    if (sortMode === "bubble") {
+      bubbleSort(numberArr, setNumberArr, "ascending");
+    }
   };
 
   return (
@@ -33,14 +46,14 @@ export const SortingPage: FC = () => {
           extraClass={styles.radio}
           value="selection"
           checked={sortMode === "selection"}
-          onChange={()=>setSortMode("selection")}
+          onChange={() => setSortMode("selection")}
         />
         <RadioInput
           label="Пузырёк"
           extraClass={styles.radio}
           value="bubble"
           checked={sortMode === "bubble"}
-          onChange={()=>setSortMode("bubble")}
+          onChange={() => setSortMode("bubble")}
         />
         <Button
           text="По возрастанию"
