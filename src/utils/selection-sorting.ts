@@ -1,3 +1,4 @@
+import React, { Dispatch, SetStateAction } from "react";
 import { TColumn } from "../types/column";
 import { ElementStates } from "../types/element-states";
 import { delay } from "./delay";
@@ -6,9 +7,9 @@ import { swap } from "./swap";
 
 export const selectionSort = async (
   arr: TColumn[],
-  setNumberArr: any,
-  setInProgress: any,
-  mode: string
+  setNumberArr: Dispatch<SetStateAction<TColumn[]>>,
+  setInProgress: Dispatch<SetStateAction<boolean>>,
+  mode: "ascending" | "descending"
 ) => {
   const { length } = arr;
   const newArr: TColumn[] = arr;
