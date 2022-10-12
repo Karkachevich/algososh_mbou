@@ -48,6 +48,7 @@ export const SortingPage: FC = () => {
           value="selection"
           checked={sortMode === "selection"}
           onChange={() => setSortMode("selection")}
+          disabled={inProgressAscent || inProgressDescent}
         />
         <RadioInput
           label="Пузырёк"
@@ -55,11 +56,12 @@ export const SortingPage: FC = () => {
           value="bubble"
           checked={sortMode === "bubble"}
           onChange={() => setSortMode("bubble")}
+          disabled={inProgressAscent || inProgressDescent}
         />
         <Button
           text="По возрастанию"
           sorting={Direction.Ascending}
-          extraClass={styles.button}
+          extraClass={styles.button_ascending}
           onClick={() => {
             onClickSortAscending();
           }}
@@ -69,7 +71,7 @@ export const SortingPage: FC = () => {
         <Button
           text="По убыванию"
           sorting={Direction.Descending}
-          extraClass={styles.button}
+          extraClass={styles.button_descending}
           onClick={() => {
             onClickSortDescending();
           }}
@@ -78,7 +80,6 @@ export const SortingPage: FC = () => {
         />
         <Button
           text="Новый массив"
-          extraClass="ml-40"
           onClick={() => {
             onClickNewArr();
           }}
