@@ -12,7 +12,7 @@ import { bubbleSort } from "../../utils/bubble-sorting";
 
 export const SortingPage: FC = () => {
   const [numberArr, setNumberArr] = useState<TColumn[]>([]);
-
+  const [sortMode, setSortMode] = useState<string>("");
   const onClickNewArr = () => {
     setNumberArr(randomArr());
   };
@@ -22,21 +22,33 @@ export const SortingPage: FC = () => {
   };
 
   const onClickSortAscending = () => {
-    bubbleSort(numberArr, setNumberArr , "ascending")
+    bubbleSort(numberArr, setNumberArr, "ascending");
   };
-
-  
 
   return (
     <SolutionLayout title="Сортировка массива">
       <div className={styles.container}>
-        <RadioInput label="Выбор" extraClass={styles.radio} />
-        <RadioInput label="Пузырёк" extraClass={styles.radio} />
+        <RadioInput
+          label="Выбор"
+          extraClass={styles.radio}
+          value="selection"
+          checked={sortMode === "selection"}
+          onChange={()=>setSortMode("selection")}
+        />
+        <RadioInput
+          label="Пузырёк"
+          extraClass={styles.radio}
+          value="bubble"
+          checked={sortMode === "bubble"}
+          onChange={()=>setSortMode("bubble")}
+        />
         <Button
           text="По возрастанию"
           sorting={Direction.Ascending}
           extraClass={styles.button}
-          onClick={()=>{onClickSortAscending()}}
+          onClick={() => {
+            onClickSortAscending();
+          }}
         />
         <Button
           text="По убыванию"
