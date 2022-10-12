@@ -8,11 +8,12 @@ import { changeColor } from "./change-color";
 export const bubbleSort = async (
   arr: TColumn[],
   setNumberArr: any,
+  setInProgress: any,
   mode: string
 ) => {
   const { length } = arr;
   const newArr: TColumn[] = arr;
-
+  setInProgress(true);
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length - i - 1; j++) {
       changeColor(newArr, j, j + 1, ElementStates.Changing);
@@ -47,4 +48,5 @@ export const bubbleSort = async (
   }
   newArr[0].state = ElementStates.Modified;
   setNumberArr([...newArr]);
+  setInProgress(false);
 };

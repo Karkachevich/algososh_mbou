@@ -7,11 +7,12 @@ import { swap } from "./swap";
 export const selectionSort = async (
   arr: TColumn[],
   setNumberArr: any,
+  setInProgress: any,
   mode: string
 ) => {
   const { length } = arr;
   const newArr: TColumn[] = arr;
-
+  setInProgress(true);
   for (let i = 0; i < length - 1; i++) {
     let maxInd = i;
 
@@ -58,4 +59,5 @@ export const selectionSort = async (
   }
   newArr[length - 1].state = ElementStates.Modified;
   setNumberArr([...newArr]);
+  setInProgress(false);
 };
