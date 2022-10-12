@@ -12,6 +12,7 @@ import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { swap } from "../../utils/swap";
 import { ElementStates } from "../../types/element-states";
 import { selectionSort } from "../../utils/selection-sorting";
+import { changeColor } from "../../utils/change-color";
 
 export const SortingPage: FC = () => {
   const [numberArr, setNumberArr] = useState<TColumn[]>([]);
@@ -21,7 +22,38 @@ export const SortingPage: FC = () => {
   };
 
   const onClickSort = () => {
-    selectionSort(numberArr, setNumberArr, 'descending');
+    selectionSort(numberArr, setNumberArr, "descending");
+  };
+
+  const bubbleSort = async (arr: TColumn[]) => {
+    const { length } = arr;
+    const newArr: TColumn[] = arr;
+
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < length - i - 1; j++) {
+        changeColor(newArr, j, j + 1, ElementStates.Changing);
+        setNumberArr([...newArr])
+        await delay(SHORT_DELAY_IN_MS);
+
+        if (newArr[j].number < newArr[j + 1].number) {
+          changeColor(newArr, j, j + 1, ElementStates.Changing);
+          swap(newArr, j, j + 1);
+          setNumberArr([...newArr])
+          await delay(SHORT_DELAY_IN_MS);
+        }
+
+        changeColor(newArr, j, j + 1, ElementStates.Default);
+
+        if(j === length - i - 2){
+          newArr[j + 1].state = ElementStates.Modified;
+        }
+
+        setNumberArr([...newArr])
+        await delay(SHORT_DELAY_IN_MS);
+      }
+    }
+    newArr[0].state = ElementStates.Modified;
+    setNumberArr([...newArr]);
   };
 
   return (
@@ -33,6 +65,7 @@ export const SortingPage: FC = () => {
           text="По возрастанию"
           sorting={Direction.Ascending}
           extraClass={styles.button}
+          onClick={()=>{bubbleSort(numberArr)}}
         />
         <Button
           text="По убыванию"
