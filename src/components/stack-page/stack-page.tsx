@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, SyntheticEvent } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -6,18 +6,27 @@ import { Circle } from "../ui/circle/circle";
 import styles from "./stack-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
+import { Stack } from "../../utils/stack";
 
 
 
 export const StackPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
+  const [charsArr, setCharsArr] = useState<TChar[]>([]);
+  const stack = new Stack<string>();
 
-  const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
+  const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
   };
 
-  const add = (inputValue: string) => {
+  const push = () => {
+    stack.push(inputValue);
+    
+    const element = stack.peak();
+    charsArr.push({char: element, state: ElementStates.Default });
+    setCharsArr([...charsArr])
+    setInputValue('')
     
   }
 
@@ -32,12 +41,22 @@ export const StackPage: FC = () => {
           value={inputValue}
           onChange={onChange}
         />
-        <Button text="Добавить" extraClass={styles.button_add} onClick={()=>{add(inputValue)}}/>
+        <Button text="Добавить" extraClass={styles.button_add} onClick={()=>{push()}}/>
         <Button text="Удалить" extraClass={styles.button_remove} />
         <Button text="Очистить" />
       </div>
       <div className={styles.circles}>
-        <Circle extraClass={styles.circle} />
+      {!!charsArr &&
+          charsArr.map((item, index) => {
+            return (
+              <Circle
+                key={index}
+                state={item.state}
+                extraClass={styles.circle}
+                letter={item.char}
+              />
+            );
+          })}
       </div>
     </SolutionLayout>
   );
