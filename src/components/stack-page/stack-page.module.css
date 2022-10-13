@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  margin: 0 auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  max-width: 377px;
+  margin-right: 12px;
+}
+
+.button_add {
+  margin-right: 12px;
+}
+
+.button_remove {
+  margin-right: 80px;
+}
+
+.circles {
+    display: flex;
+    margin: 120px auto auto;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.circle {
+   margin-right: 10px; 
+}
