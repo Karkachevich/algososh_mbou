@@ -1,6 +1,6 @@
 import { ElementStates } from "./element-states";
 
 export type TChar = {
-    char: string;
+    char: string | null;
     state: ElementStates;
   }
