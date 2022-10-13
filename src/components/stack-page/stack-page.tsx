@@ -22,6 +22,9 @@ export const StackPage: FC = () => {
   const push = () => {
     if (inputValue === "") return 0;
     charsArr.push({ char: inputValue, state: ElementStates.Default });
+    charsArr.forEach(item => item.head = "")
+    setCharsArr([...charsArr]);
+    charsArr[charsArr.length - 1].head = "top";
     setCharsArr([...charsArr]);
     setInputValue("");
   };
@@ -64,6 +67,7 @@ export const StackPage: FC = () => {
                 extraClass={styles.circle}
                 letter={item.char}
                 index={index}
+                head={item.head}
               />
             );
           })}
