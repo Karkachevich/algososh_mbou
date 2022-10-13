@@ -6,29 +6,34 @@ import { Circle } from "../ui/circle/circle";
 import styles from "./stack-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
-import { Stack } from "../../utils/stack";
-
-
+//import { Stack } from "../../utils/stack";
 
 export const StackPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TChar[]>([]);
-  const stack = new Stack<string>();
+  //const stack = new Stack<string>();
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
+
     setInputValue(element);
   };
 
   const push = () => {
-    stack.push(inputValue);
-    
-    const element = stack.peak();
-    charsArr.push({char: element, state: ElementStates.Default });
-    setCharsArr([...charsArr])
-    setInputValue('')
-    
-  }
+    if (inputValue === "") return 0;
+    charsArr.push({ char: inputValue, state: ElementStates.Default });
+    setCharsArr([...charsArr]);
+    setInputValue("");
+  };
+
+  const pop = () => {
+    charsArr.pop();
+    setCharsArr([...charsArr]);
+  };
+
+  const clear = () => {
+    setCharsArr([]);
+  };
 
   return (
     <SolutionLayout title="Стек">
@@ -41,12 +46,16 @@ export const StackPage: FC = () => {
           value={inputValue}
           onChange={onChange}
         />
-        <Button text="Добавить" extraClass={styles.button_add} onClick={()=>{push()}}/>
-        <Button text="Удалить" extraClass={styles.button_remove} />
-        <Button text="Очистить" />
+        <Button text="Добавить" extraClass={styles.button_add} onClick={push} />
+        <Button
+          text="Удалить"
+          extraClass={styles.button_remove}
+          onClick={pop}
+        />
+        <Button text="Очистить" onClick={clear} />
       </div>
       <div className={styles.circles}>
-      {!!charsArr &&
+        {!!charsArr &&
           charsArr.map((item, index) => {
             return (
               <Circle
@@ -54,6 +63,7 @@ export const StackPage: FC = () => {
                 state={item.state}
                 extraClass={styles.circle}
                 letter={item.char}
+                index={index}
               />
             );
           })}
