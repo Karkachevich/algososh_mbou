@@ -21,7 +21,7 @@ export class Queue<T> implements IQueue<T> {
     return {value: this.container[this.head], index: this.head};
   };
   getTail = () => {
-    return {value: this.container[this.tail - 1], index: this.tail - 1};
+    return {value: this.container[this.tail - 1], index: this.tail -1};
   };
 
   enqueue = (item: T) => {
