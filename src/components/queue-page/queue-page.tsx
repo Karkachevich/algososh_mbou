@@ -9,17 +9,28 @@ import { TChar } from "../../types/char";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { queueArr } from "../../constants/queue-arr";
+import { Queue } from "../../utils/queue";
 
 
 export const QueuePage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TChar[]>(queueArr);
   const [inProgress, setInProgress] = useState<boolean>(false);
+  const queue = new Queue<string>(7);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
   };
+
+  const enqueue = () => {
+      queue.enqueue(inputValue);
+      
+      const head = queue.getHead();
+      
+
+     
+  }
 
   return (
     <SolutionLayout title="Очередь">
