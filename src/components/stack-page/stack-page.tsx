@@ -8,11 +8,11 @@ import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-//import { Stack } from "../../utils/stack";
 
 export const StackPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TChar[]>([]);
+  const [inProgress, setInProgress] = useState<boolean>(false);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -20,23 +20,23 @@ export const StackPage: FC = () => {
   };
 
   const push = async () => {
+    setInProgress(true);
+    setInputValue("");
     if (inputValue === "") return 0;
     charsArr.push({ char: inputValue, state: ElementStates.Default });
     charsArr.forEach((item) => {
       item.state = ElementStates.Default;
       item.head = "";
     });
-    await delay(SHORT_DELAY_IN_MS);
     setCharsArr([...charsArr]);
     charsArr[charsArr.length - 1].head = "top";
     charsArr[charsArr.length - 1].state = ElementStates.Changing;
     setCharsArr([...charsArr]);
     await delay(SHORT_DELAY_IN_MS);
-    setInputValue("");
+    setInProgress(false);
   };
 
   const pop = async () => {
-   
     if (charsArr.length > 1) {
       charsArr.pop();
       charsArr[charsArr.length - 1].head = "top";
@@ -63,7 +63,12 @@ export const StackPage: FC = () => {
           value={inputValue}
           onChange={onChange}
         />
-        <Button text="Добавить" extraClass={styles.button_add} onClick={push} />
+        <Button
+          text="Добавить"
+          extraClass={styles.button_add}
+          onClick={push}
+          disabled={inProgress}
+        />
         <Button
           text="Удалить"
           extraClass={styles.button_remove}
