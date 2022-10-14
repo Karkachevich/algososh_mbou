@@ -12,39 +12,37 @@ import { queueArr } from "../../constants/queue-arr";
 import { Queue } from "../../utils/queue";
 
 export const QueuePage: FC = () => {
-
-  
+  const size: number = 7;
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TChar[]>(queueArr);
   const [inProgress, setInProgress] = useState<boolean>(false);
-  const queue = useMemo(() => new Queue<string>(7), []);
+  const queue = useMemo(() => new Queue<string>(size), []);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
   };
 
-  const enqueue = () => {
-    
-    setInputValue("")
-    const newArr = [...charsArr]
+  const enqueue = async () => {
+    setInputValue("");
+    const newArr = [...charsArr];
 
     queue.enqueue(inputValue);
     const head = queue.getHead();
     const tail = queue.getTail();
 
-    newArr[head.index].char = head.value; 
+    newArr[head.index].char = head.value;
     newArr[head.index].head = "head";
 
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
 
-    newArr[tail.index].char = tail.value; 
+    newArr[tail.index].char = tail.value;
     newArr[tail.index].tail = "tail";
     newArr[tail.index].state = ElementStates.Changing;
-    console.log(newArr)
-    setCharsArr([...newArr])
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
     newArr[tail.index].state = ElementStates.Default;
-   
+    setCharsArr([...newArr]);
   };
 
   return (
@@ -69,18 +67,18 @@ export const QueuePage: FC = () => {
       </div>
       <div className={styles.circles}>
         {charsArr.map((item, index) => {
-            return (
-              <Circle
-                key={index}
-                state={item.state}
-                extraClass={styles.circle}
-                letter={item.char}
-                index={index}
-                head={item.head}
-                tail={item.tail}
-              />
-            );
-          })}
+          return (
+            <Circle
+              key={index}
+              state={item.state}
+              extraClass={styles.circle}
+              letter={item.char}
+              index={index}
+              head={item.head}
+              tail={item.tail}
+            />
+          );
+        })}
       </div>
     </SolutionLayout>
   );
