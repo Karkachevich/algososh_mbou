@@ -1,9 +1,9 @@
 import { ElementStates } from "../types/element-states";
 import { TChar } from "../types/char";
 
-const maxLength: number = 7;
+const length: number = 7;
 
-export const queueArr: TChar[] = Array.from({ length: maxLength }, () => ({
+export const queueArr: TChar[] = Array.from({ length: length }, () => ({
   char: "",
   state: ElementStates.Default,
 }));
