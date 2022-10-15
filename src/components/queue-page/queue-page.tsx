@@ -45,6 +45,26 @@ export const QueuePage: FC = () => {
     setCharsArr([...newArr]);
   };
 
+  const dequeue = async () => {
+    const newArr = [...charsArr];
+    queue.dequeue();
+    const head = queue.getHead();
+
+    if (head.index > 0) {
+      newArr[head.index - 1].char = "";
+      newArr[head.index - 1].head = "";
+    }
+
+    newArr[head.index].char = head.value;
+    newArr[head.index].head = "head";
+    newArr[head.index].state = ElementStates.Changing;
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    newArr[head.index].state = ElementStates.Default;
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+  };
+
   return (
     <SolutionLayout title="Очередь">
       <div className={styles.container}>
@@ -62,7 +82,11 @@ export const QueuePage: FC = () => {
           disabled={inProgress}
           onClick={enqueue}
         />
-        <Button text="Удалить" extraClass={styles.button_remove} />
+        <Button
+          text="Удалить"
+          extraClass={styles.button_remove}
+          onClick={dequeue}
+        />
         <Button text="Очистить" />
       </div>
       <div className={styles.circles}>
