@@ -8,11 +8,15 @@ import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { queueArr } from "../../constants/queue-arr";
 import { Queue } from "../../utils/queue";
 
 export const QueuePage: FC = () => {
   const size: number = 7;
+  const queueArr: TChar[] = Array.from({ length: size }, () => ({
+    char: "",
+    state: ElementStates.Default,
+  }));
+
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TChar[]>(queueArr);
   const [inProgress, setInProgress] = useState<boolean>(false);
@@ -21,6 +25,11 @@ export const QueuePage: FC = () => {
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
+  };
+
+  const clear = () => {
+    queue.clear();
+    setCharsArr([...queueArr]);
   };
 
   const enqueue = async () => {
@@ -47,22 +56,29 @@ export const QueuePage: FC = () => {
 
   const dequeue = async () => {
     const newArr = [...charsArr];
-    queue.dequeue();
+
     const head = queue.getHead();
+    const tail = queue.getTail();
 
-    if (head.index > 0) {
-      newArr[head.index - 1].char = "";
-      newArr[head.index - 1].head = "";
+    if (head.index === tail.index) {
+      clear();
+    } else {
+      queue.dequeue();
+      const head = queue.getHead();
+      if (head.index > 0) {
+        newArr[head.index - 1].char = "";
+        newArr[head.index - 1].head = "";
+      }
+
+      newArr[head.index].char = head.value;
+      newArr[head.index].head = "head";
+      newArr[head.index].state = ElementStates.Changing;
+      await delay(SHORT_DELAY_IN_MS);
+      setCharsArr([...newArr]);
+      newArr[head.index].state = ElementStates.Default;
+      await delay(SHORT_DELAY_IN_MS);
+      setCharsArr([...newArr]);
     }
-
-    newArr[head.index].char = head.value;
-    newArr[head.index].head = "head";
-    newArr[head.index].state = ElementStates.Changing;
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    newArr[head.index].state = ElementStates.Default;
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
   };
 
   return (
@@ -87,7 +103,7 @@ export const QueuePage: FC = () => {
           extraClass={styles.button_remove}
           onClick={dequeue}
         />
-        <Button text="Очистить" />
+        <Button text="Очистить" onClick={clear} />
       </div>
       <div className={styles.circles}>
         {charsArr.map((item, index) => {
