@@ -12,7 +12,7 @@ import { Queue } from "../../utils/queue";
 
 export const QueuePage: FC = () => {
   const size: number = 7;
-  const queueArr: TChar[] = Array.from({ length: size }, () => ({
+  const queueArr: TChar[] = [...Array(size)].map(() => ({
     char: "",
     state: ElementStates.Default,
   }));
@@ -41,17 +41,17 @@ export const QueuePage: FC = () => {
     queue.enqueue(inputValue);
     const head = queue.getHead();
     const tail = queue.getTail();
-
-    newArr[head.index].char = head.value;
-    newArr[head.index].head = "head";
-
+    newArr[head.index] = {char: head.value, head: "head"}
+    
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
+    newArr[tail.index] = {
+      char: tail.value,
+      tail: "tail",
+      state: ElementStates.Changing,
+    };
 
-    newArr[tail.index].char = tail.value;
-    newArr[tail.index].tail = "tail";
-    newArr[tail.index].state = ElementStates.Changing;
-    await delay(SHORT_DELAY_IN_MS);
     setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
     newArr[tail.index].state = ElementStates.Default;
     setCharsArr([...newArr]);
     setInProgressEnqueue(false);
@@ -69,17 +69,17 @@ export const QueuePage: FC = () => {
       queue.dequeue();
       const head = queue.getHead();
       if (head.index > 0) {
-        newArr[head.index - 1].char = "";
-        newArr[head.index - 1].head = "";
+        newArr[head.index - 1] = { char: "", head: "" };
       }
-
-      newArr[head.index].char = head.value;
-      newArr[head.index].head = "head";
-      newArr[head.index].state = ElementStates.Changing;
-      await delay(SHORT_DELAY_IN_MS);
+      newArr[head.index] = {
+        char: head.value,
+        head: "head",
+        state: ElementStates.Changing,
+      };
+      
       setCharsArr([...newArr]);
-      newArr[head.index].state = ElementStates.Default;
       await delay(SHORT_DELAY_IN_MS);
+      newArr[head.index].state = ElementStates.Default;
       setCharsArr([...newArr]);
     }
 
@@ -111,7 +111,11 @@ export const QueuePage: FC = () => {
           disabled={inProgressEnqueue}
           isLoader={inProgressDenqueue}
         />
-        <Button text="Очистить" onClick={clear} disabled={inProgressEnqueue || inProgressDenqueue} />
+        <Button
+          text="Очистить"
+          onClick={clear}
+          disabled={inProgressEnqueue || inProgressDenqueue}
+        />
       </div>
       <div className={styles.circles}>
         {charsArr.map((item, index) => {
