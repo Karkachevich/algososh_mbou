@@ -15,6 +15,8 @@ export const ListPage: FC = () => {
     state: ElementStates.Default,
   }));
   const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
+  
+
 
   return (
     <SolutionLayout title="Связный список">
@@ -35,7 +37,7 @@ export const ListPage: FC = () => {
         <Button text="Добавить по индексу" extraClass={styles.button_index} />
         <Button text="Удалить по индексу" extraClass={styles.button_index} />
       </div>
-      <div className={styles.circles}>
+      <ul className={styles.circles}>
         {charsArr.map((item, index) => {
           return (
             <li key={index} className={styles.items}>
@@ -44,14 +46,14 @@ export const ListPage: FC = () => {
                 extraClass={styles.circle}
                 letter={item.char}
                 index={index}
-                head={item.head}
-                tail={item.tail}
+                head={index === 0 ? "head" : ""}
+                tail={index === charsArr.length - 1 ? "tail" : ""}
               />
-              {charsArr.length > index + 1 && <ArrowIcon/>}
+              {charsArr.length > index + 1 && <ArrowIcon />}
             </li>
           );
         })}
-      </div>
+      </ul>
     </SolutionLayout>
   );
 };
