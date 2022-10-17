@@ -1,33 +1,40 @@
 .container {
-    display: flex;
-    margin: 12px auto;
-    flex-direction: row;
-    justify-content: center;
-    height: 90px;
-  }
-  
-  .input {
-    max-width: 204px;
-    margin-right: 12px;
-  }
-  
-  .button_list {
-    width: 175px;
-    margin-right: 12px;
-  }
-  
-  .button_index {
-    width: 362px;
-    margin-right: 12px;
-  }
-  
-  .circles {
-      display: flex;
-      margin: 90px auto auto;
-      flex-direction: row;
-      justify-content: center;
-  }
-  
-  .circle {
-     margin-right: 10px; 
-  }
+  display: flex;
+  margin: 12px auto;
+  flex-direction: row;
+  justify-content: center;
+  height: 90px;
+}
+
+.input {
+  max-width: 204px;
+  margin-right: 12px;
+}
+
+.button_list {
+  width: 175px;
+  margin-right: 12px;
+}
+
+.button_index {
+  width: 362px;
+  margin-right: 12px;
+}
+
+.circles {
+  display: flex;
+  margin: 90px auto auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  margin-right: 10px;
+}
+
+.items {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
