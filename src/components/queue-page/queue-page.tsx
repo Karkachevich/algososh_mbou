@@ -19,7 +19,8 @@ export const QueuePage: FC = () => {
 
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TChar[]>(queueArr);
-  const [inProgress, setInProgress] = useState<boolean>(false);
+  const [inProgressEnqueue, setInProgressEnqueue] = useState<boolean>(false);
+  const [inProgressDenqueue, setInProgressDenqueue] = useState<boolean>(false);
   const queue = useMemo(() => new Queue<string>(size), []);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
@@ -34,6 +35,7 @@ export const QueuePage: FC = () => {
 
   const enqueue = async () => {
     setInputValue("");
+    setInProgressEnqueue(true);
     const newArr = [...charsArr];
 
     queue.enqueue(inputValue);
@@ -52,11 +54,12 @@ export const QueuePage: FC = () => {
     setCharsArr([...newArr]);
     newArr[tail.index].state = ElementStates.Default;
     setCharsArr([...newArr]);
+    setInProgressEnqueue(false);
   };
 
   const dequeue = async () => {
     const newArr = [...charsArr];
-
+    setInProgressDenqueue(true);
     const head = queue.getHead();
     const tail = queue.getTail();
 
@@ -79,6 +82,8 @@ export const QueuePage: FC = () => {
       await delay(SHORT_DELAY_IN_MS);
       setCharsArr([...newArr]);
     }
+
+    setInProgressDenqueue(false);
   };
 
   return (
@@ -95,15 +100,18 @@ export const QueuePage: FC = () => {
         <Button
           text="Добавить"
           extraClass={styles.button_add}
-          disabled={inProgress}
           onClick={enqueue}
+          disabled={inProgressDenqueue}
+          isLoader={inProgressEnqueue}
         />
         <Button
           text="Удалить"
           extraClass={styles.button_remove}
           onClick={dequeue}
+          disabled={inProgressEnqueue}
+          isLoader={inProgressDenqueue}
         />
-        <Button text="Очистить" onClick={clear} />
+        <Button text="Очистить" onClick={clear} disabled={inProgressEnqueue || inProgressDenqueue} />
       </div>
       <div className={styles.circles}>
         {charsArr.map((item, index) => {
