@@ -22,14 +22,14 @@ export class LinkedList<T> implements ILinkedList<T> {
     this.size = 0;
   }
 
-  insertAt(element: T, index: number) {
-    if (index < 0 || index > this.size) {
-      console.log("Enter a valid index");
+  insertAt(element: T, position: number) {
+    if (position < 0 || position > this.size) {
+      console.log("Enter a valid position");
       return;
     } else {
       const node = new Node(element);
 
-      if (index === 0) {
+      if (position === 0) {
         node.next = this.head;
         this.head = node;
       } else {
@@ -37,7 +37,7 @@ export class LinkedList<T> implements ILinkedList<T> {
         let currIndex = 0;
         let prev = null;
 
-        while (currIndex < index && curr) {
+        while (currIndex < position && curr) {
           prev = curr;
           curr = curr.next;
           currIndex++;
@@ -67,6 +67,22 @@ export class LinkedList<T> implements ILinkedList<T> {
     }
     this.size++;
   }
+
+  getNodeByPosition(position: number) {
+    if (position < 0 || position > this.size) { 
+        console.log("Enter a valid position");
+    }
+
+    let current = this.head; 
+    let index = 0; 
+
+    while(index < position) {  
+        current = current!.next; 
+        index++; 
+    }
+
+    return current!.value;
+}
 
   getSize() {
     return this.size;
