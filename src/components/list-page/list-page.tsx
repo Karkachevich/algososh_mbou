@@ -80,14 +80,42 @@ export const ListPage: FC = () => {
     setCharsArr([...newArr]);
   };
 
-  const addInTail = () => {
+  const addInTail = async () => {
+    const newArr = [...charsArr];
+    setInputValue("")
     const element = {
       char: inputValue,
       state: ElementStates.Default,
     };
 
-    linkedList.append(element);
-    setCharsArr(linkedList.print());
+    const position = linkedList.getSize() - 1;
+    linkedList?.insertAt(element, position);
+    const head = linkedList.getNodeByPosition(position);
+    newArr[position] = {
+      ...newArr[position],
+      extra_circle: {
+        insertion: true,
+        value: head.char,
+        state: ElementStates.Changing,
+      },
+    };
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    newArr[position] = {
+      ...newArr[position],
+      extra_circle: {
+        insertion: false,
+        value: undefined,
+      },
+    };
+
+    newArr.push({ char: head.char, state: ElementStates.Modified });
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr[position + 1].state = ElementStates.Default;
+    setCharsArr([...newArr]);
+    
   };
 
   const removeHead = () => {
