@@ -7,7 +7,7 @@ export class Node<T> {
   }
 }
 
-interface ILinkedList<T> {
+export interface ILinkedList<T> {
   append: (element: T) => void;
   insertAt: (element: T, position: number) => void;
   getSize: () => number;
@@ -79,6 +79,6 @@ export class LinkedList<T> implements ILinkedList<T> {
       res += `${curr.value} `;
       curr = curr.next;
     }
-    
+    console.log(res);
   }
 }

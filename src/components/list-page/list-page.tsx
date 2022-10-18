@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, SyntheticEvent, useEffect, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -7,6 +7,7 @@ import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
+import { ILinkedList, LinkedList } from "../../utils/linked-list";
 
 export const ListPage: FC = () => {
   const size: number = 4;
@@ -14,9 +15,28 @@ export const ListPage: FC = () => {
     char: String(Math.floor(Math.random() * 100)),
     state: ElementStates.Default,
   }));
-  const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
   
+  const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
+  const [inputValue, setInputValue] = useState<string>("");
+  //const [linkedList, setLinkedList] = useState<ILinkedList<TChar>>();
+  const linkedList = new LinkedList<TChar>();
 
+  useEffect(() => {
+    const newArr = [...charsArr];
+    newArr.forEach((item, index) => {
+      linkedList?.insertAt(item, index);
+    });
+    console.log(linkedList)  
+  }, []);
+
+  const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
+    const element = evt.currentTarget.value;
+    setInputValue(element);
+  };
+
+  const addInHead = () => {
+
+  };
 
   return (
     <SolutionLayout title="Связный список">
@@ -26,8 +46,14 @@ export const ListPage: FC = () => {
           maxLength={4}
           isLimitText={true}
           extraClass={styles.input}
+          value={inputValue}
+          onChange={onChange}
         />
-        <Button text="Добавить в head" extraClass={styles.button_list} />
+        <Button
+          text="Добавить в head"
+          extraClass={styles.button_list}
+          onClick={addInHead}
+        />
         <Button text="Добавить в tail" extraClass={styles.button_list} />
         <Button text="Удалить из head" extraClass={styles.button_list} />
         <Button text="Удалить из tail" extraClass={styles.button_list} />
