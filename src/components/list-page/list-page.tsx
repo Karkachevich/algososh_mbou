@@ -1,4 +1,4 @@
-import React, { FC, SyntheticEvent, useEffect, useState } from "react";
+import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -15,18 +15,18 @@ export const ListPage: FC = () => {
     char: String(Math.floor(Math.random() * 100)),
     state: ElementStates.Default,
   }));
-  
+
   const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
   const [inputValue, setInputValue] = useState<string>("");
   //const [linkedList, setLinkedList] = useState<ILinkedList<TChar>>();
-  const linkedList = new LinkedList<TChar>();
+  const linkedList = useMemo(() => new LinkedList<TChar>(), []);
 
   useEffect(() => {
     const newArr = [...charsArr];
     newArr.forEach((item, index) => {
       linkedList?.insertAt(item, index);
     });
-    console.log(linkedList)  
+    console.log(linkedList);
   }, []);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
@@ -35,7 +35,23 @@ export const ListPage: FC = () => {
   };
 
   const addInHead = () => {
+    const element = {
+      char: inputValue,
+      state: ElementStates.Default,
+    };
 
+    linkedList.append(element);
+    setCharsArr(linkedList.print());
+  };
+
+  const addInTail = () => {
+    const element = {
+      char: inputValue,
+      state: ElementStates.Default,
+    };
+
+    linkedList.append(element);
+    setCharsArr(linkedList.print());
   };
 
   return (
@@ -54,7 +70,11 @@ export const ListPage: FC = () => {
           extraClass={styles.button_list}
           onClick={addInHead}
         />
-        <Button text="Добавить в tail" extraClass={styles.button_list} />
+        <Button
+          text="Добавить в tail"
+          extraClass={styles.button_list}
+          onClick={addInTail}
+        />
         <Button text="Удалить из head" extraClass={styles.button_list} />
         <Button text="Удалить из tail" extraClass={styles.button_list} />
       </div>
