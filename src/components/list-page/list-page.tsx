@@ -7,7 +7,7 @@ import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TChar } from "../../types/char";
-import { ILinkedList, LinkedList } from "../../utils/linked-list";
+import { LinkedList } from "../../utils/linked-list";
 
 export const ListPage: FC = () => {
   const size: number = 4;
@@ -18,7 +18,7 @@ export const ListPage: FC = () => {
 
   const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
   const [inputValue, setInputValue] = useState<string>("");
-  //const [linkedList, setLinkedList] = useState<ILinkedList<TChar>>();
+ 
   const linkedList = useMemo(() => new LinkedList<TChar>(), []);
 
   useEffect(() => {
@@ -26,7 +26,6 @@ export const ListPage: FC = () => {
     newArr.forEach((item, index) => {
       linkedList?.insertAt(item, index);
     });
-    console.log(linkedList);
   }, []);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
@@ -35,13 +34,16 @@ export const ListPage: FC = () => {
   };
 
   const addInHead = () => {
+    const newArr = [...charsArr];
     const element = {
       char: inputValue,
       state: ElementStates.Default,
     };
-
     linkedList.append(element);
-    setCharsArr(linkedList.print());
+    const oneElement = linkedList.getNodeByPosition(linkedList.getSize() - 1);
+    newArr.unshift(oneElement) ;
+        
+    setCharsArr([...newArr]);
   };
 
   const addInTail = () => {
