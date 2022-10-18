@@ -45,7 +45,7 @@ export const ListPage: FC = () => {
 
   const addInHead = async () => {
     const newArr = [...charsArr];
-    setInputValue("")
+    setInputValue("");
     const element = {
       char: inputValue,
       state: ElementStates.Default,
@@ -82,7 +82,7 @@ export const ListPage: FC = () => {
 
   const addInTail = async () => {
     const newArr = [...charsArr];
-    setInputValue("")
+    setInputValue("");
     const element = {
       char: inputValue,
       state: ElementStates.Default,
@@ -115,14 +115,32 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position + 1].state = ElementStates.Default;
     setCharsArr([...newArr]);
-    
   };
 
-  const removeHead = () => {
-    let newArr = [...charsArr];
+  const removeHead = async () => {
+    const newArr = [...charsArr];
+
     const position = 0;
-    linkedList.removeFromPosition(position);
-    newArr = linkedList.print();
+    const element = linkedList.removeFromPosition(position);
+    console.log(element);
+    newArr[position] = {
+      ...newArr[position],
+      char: "",
+      state: ElementStates.Modified,
+      extra_circle: {
+        removal: true,
+        value: element.char,
+        state: ElementStates.Changing,
+      },
+    };
+    
+    setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr.shift();
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
   };
 
@@ -225,8 +243,13 @@ export const ListPage: FC = () => {
                   state={item.extra_circle.state}
                 />
               )}
-              {false && (
-                <Circle extraClass={styles.circle_removal} isSmall={true} />
+              {item.extra_circle?.removal && (
+                <Circle
+                  extraClass={styles.circle_removal}
+                  isSmall={true}
+                  letter={item.extra_circle?.value}
+                  state={item.extra_circle.state}
+                />
               )}
             </li>
           );
