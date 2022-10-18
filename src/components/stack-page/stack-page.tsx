@@ -5,13 +5,13 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./stack-page.module.css";
 import { ElementStates } from "../../types/element-states";
-import { TChar } from "../../types/char";
+import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const StackPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [charsArr, setCharsArr] = useState<TChar[]>([]);
+  const [charsArr, setCharsArr] = useState<TCircle[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {

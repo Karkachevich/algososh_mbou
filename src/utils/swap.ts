@@ -1,8 +1,8 @@
-import { TChar } from "../types/char";
+import { TCircle } from "../types/circle";
 import { TColumn } from "../types/column";
 
 export const swap = (
-  arr: TChar[] | TColumn[],
+  arr: TCircle[] | TColumn[],
   firstIndex: number,
   secondIndex: number
 ): void => {

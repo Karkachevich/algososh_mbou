@@ -6,21 +6,25 @@ import { Circle } from "../ui/circle/circle";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
-import { TChar } from "../../types/char";
+import { TCircle } from "../../types/circle";
 import { LinkedList } from "../../utils/linked-list";
+import { delay } from "../../utils/delay";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const ListPage: FC = () => {
   const size: number = 4;
-  const randomArr: TChar[] = [...Array(size)].map(() => ({
+  const randomArr: TCircle[] = [...Array(size)].map(() => ({
     char: String(Math.floor(Math.random() * 100)),
     state: ElementStates.Default,
   }));
 
-  const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
+  const [charsArr, setCharsArr] = useState<TCircle[]>(randomArr);
   const [inputValue, setInputValue] = useState<string>("");
   const [inputIndex, setInputIndex] = useState<number>();
+  const [inProgressInsertion, setInProgressInsertion] =
+    useState<boolean>(false);
 
-  const linkedList = useMemo(() => new LinkedList<TChar>(), []);
+  const linkedList = useMemo(() => new LinkedList<TCircle>(), []);
 
   useEffect(() => {
     const newArr = [...charsArr];
@@ -39,17 +43,40 @@ export const ListPage: FC = () => {
     setInputIndex(index);
   };
 
-  const addInHead = () => {
+  const addInHead = async () => {
     const newArr = [...charsArr];
+    setInputValue("")
     const element = {
       char: inputValue,
       state: ElementStates.Default,
     };
-    linkedList.append(element);
-    const position = linkedList.getSize() - 1;
-    const oneElement = linkedList.getNodeByPosition(position);
-    newArr.unshift(oneElement);
 
+    const position = 0;
+    linkedList?.insertAt(element, position);
+    const head = linkedList.getNodeByPosition(position);
+    newArr[position] = {
+      ...newArr[position],
+      extra_circle: {
+        insertion: true,
+        value: head.char,
+        state: ElementStates.Changing,
+      },
+    };
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    newArr[position] = {
+      ...newArr[position],
+      extra_circle: {
+        insertion: false,
+        value: undefined,
+      },
+    };
+
+    newArr.unshift({ char: head.char, state: ElementStates.Modified });
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
   };
 
@@ -162,8 +189,17 @@ export const ListPage: FC = () => {
                 tail={index === charsArr.length - 1 ? "tail" : ""}
               />
               {charsArr.length > index + 1 && <ArrowIcon />}
-              {<Circle extraClass={styles.circle_insertion} isSmall={true}/>}
-              {<Circle extraClass={styles.circle_removal} isSmall={true}/>}
+              {item.extra_circle?.insertion && (
+                <Circle
+                  extraClass={styles.circle_insertion}
+                  isSmall={true}
+                  letter={item.extra_circle?.value}
+                  state={item.extra_circle.state}
+                />
+              )}
+              {false && (
+                <Circle extraClass={styles.circle_removal} isSmall={true} />
+              )}
             </li>
           );
         })}

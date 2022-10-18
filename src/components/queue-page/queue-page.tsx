@@ -5,20 +5,20 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./queue-page.module.css";
 import { ElementStates } from "../../types/element-states";
-import { TChar } from "../../types/char";
+import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { Queue } from "../../utils/queue";
 
 export const QueuePage: FC = () => {
   const size: number = 7;
-  const queueArr: TChar[] = [...Array(size)].map(() => ({
+  const queueArr: TCircle[] = [...Array(size)].map(() => ({
     char: "",
     state: ElementStates.Default,
   }));
 
   const [inputValue, setInputValue] = useState<string>("");
-  const [charsArr, setCharsArr] = useState<TChar[]>(queueArr);
+  const [charsArr, setCharsArr] = useState<TCircle[]>(queueArr);
   const [inProgressEnqueue, setInProgressEnqueue] = useState<boolean>(false);
   const [inProgressDenqueue, setInProgressDenqueue] = useState<boolean>(false);
   const queue = useMemo(() => new Queue<string>(size), []);

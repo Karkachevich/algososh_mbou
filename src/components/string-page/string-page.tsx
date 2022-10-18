@@ -9,11 +9,11 @@ import { DELAY_IN_MS } from "../../constants/delays";
 import styles from "./string-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { changeColor } from "../../utils/change-color";
-import { TChar } from "../../types/char";
+import { TCircle } from "../../types/circle";
 
 export const StringPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [charsArr, setCharsArr] = useState<TChar[]>([]);
+  const [charsArr, setCharsArr] = useState<TCircle[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
   
   const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
@@ -23,7 +23,7 @@ export const StringPage: FC = () => {
 
   const reverse = async (inputValue: string) => {
 
-    const newCharsArr: TChar[] = inputValue.split("").map((item) => {
+    const newCharsArr: TCircle[] = inputValue.split("").map((item) => {
       return { char: item, state: ElementStates.Default };
     });
 

@@ -42,13 +42,15 @@
 
 .circle_insertion {
   position: absolute;
-  top: -70px;
+  top: -60px;
   left: 14px;
-
+  z-index: 1;
+  background-color: white;
 }
 
 .circle_removal {
   position: absolute;
   top: 112px;
   left: 14px;
+  background-color: white;
 }
