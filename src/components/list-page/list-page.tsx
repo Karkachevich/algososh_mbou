@@ -80,7 +80,6 @@ export const ListPage: FC = () => {
   };
 
   const addByIndex = () => {
-
     let newArr = [...charsArr];
     const element = {
       char: inputValue,
@@ -90,8 +89,14 @@ export const ListPage: FC = () => {
     newArr = linkedList.print();
 
     setCharsArr([...newArr]);
+  };
 
-  }
+  const removeFromIndex = () => {
+    let newArr = [...charsArr];
+    linkedList.removeFromPosition(inputIndex!);
+    newArr = linkedList.print();
+    setCharsArr([...newArr]);
+  };
 
   return (
     <SolutionLayout title="Связный список">
@@ -130,11 +135,19 @@ export const ListPage: FC = () => {
           placeholder="Введите индекс"
           extraClass={styles.input}
           maxLength={1}
-          value={inputIndex}
+          value={inputIndex || ""}
           onChange={onChangeIndex}
         />
-        <Button text="Добавить по индексу" extraClass={styles.button_index} onClick={addByIndex}/>
-        <Button text="Удалить по индексу" extraClass={styles.button_index} />
+        <Button
+          text="Добавить по индексу"
+          extraClass={styles.button_index}
+          onClick={addByIndex}
+        />
+        <Button
+          text="Удалить по индексу"
+          extraClass={styles.button_index}
+          onClick={removeFromIndex}
+        />
       </div>
       <ul className={styles.circles}>
         {charsArr.map((item, index) => {
