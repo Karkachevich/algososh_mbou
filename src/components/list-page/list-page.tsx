@@ -132,7 +132,7 @@ export const ListPage: FC = () => {
         state: ElementStates.Changing,
       },
     };
-    
+
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr.shift();
@@ -158,7 +158,7 @@ export const ListPage: FC = () => {
         state: ElementStates.Changing,
       },
     };
-    
+
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr.pop();
@@ -167,18 +167,61 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position - 1].state = ElementStates.Default;
     setCharsArr([...newArr]);
-    
   };
 
-  const addByIndex = () => {
-    let newArr = [...charsArr];
+  const addByIndex = async () => {
+
+    const newArr = [...charsArr];
+    setInputValue("");
     const element = {
       char: inputValue,
       state: ElementStates.Default,
     };
-    linkedList.insertAt(element, inputIndex!);
-    newArr = linkedList.print();
 
+    const position = inputIndex!;
+    linkedList?.insertAt(element, position);
+    const newElement = linkedList.getNodeByPosition(position);
+
+    for (let i = 0; i <= position; i++) {
+      newArr[i] = {
+        ...newArr[i],
+        extra_circle: {
+          insertion: true,
+          value: newElement.char,
+          state: ElementStates.Changing,
+        },
+      };
+      await delay(SHORT_DELAY_IN_MS);
+      if (i >= 0) {
+        newArr[i - 1] = {
+          ...newArr[i - 1],
+          extra_circle: {
+            insertion: false,
+            value: undefined,
+            state: ElementStates.Changing,
+          },
+        };
+        await delay(SHORT_DELAY_IN_MS);
+        setCharsArr([...newArr]);
+      }
+    }
+
+    newArr[position] = {
+      ...newArr[position],
+      extra_circle: {
+        insertion: false,
+        value: undefined,
+      },
+    };
+
+    newArr.splice(position, 0, {
+      char: newElement.char,
+      state: ElementStates.Modified,
+    });
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
   };
 
