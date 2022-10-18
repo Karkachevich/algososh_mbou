@@ -18,7 +18,8 @@ export const ListPage: FC = () => {
 
   const [charsArr, setCharsArr] = useState<TChar[]>(randomArr);
   const [inputValue, setInputValue] = useState<string>("");
- 
+  const [inputIndex, setInputIndex] = useState<number>();
+
   const linkedList = useMemo(() => new LinkedList<TChar>(), []);
 
   useEffect(() => {
@@ -33,6 +34,11 @@ export const ListPage: FC = () => {
     setInputValue(element);
   };
 
+  const onChangeIndex = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
+    const index = Number(evt.currentTarget.value.replace(/[^0-9]/g, ""));
+    setInputIndex(index);
+  };
+
   const addInHead = () => {
     const newArr = [...charsArr];
     const element = {
@@ -42,8 +48,8 @@ export const ListPage: FC = () => {
     linkedList.append(element);
     const position = linkedList.getSize() - 1;
     const oneElement = linkedList.getNodeByPosition(position);
-    newArr.unshift(oneElement) ;
-        
+    newArr.unshift(oneElement);
+
     setCharsArr([...newArr]);
   };
 
@@ -62,10 +68,30 @@ export const ListPage: FC = () => {
     const position = 0;
     linkedList.removeFromPosition(position);
     newArr = linkedList.print();
-    setCharsArr([...newArr])
+    setCharsArr([...newArr]);
+  };
+
+  const removeTail = () => {
+    let newArr = [...charsArr];
+    const position = linkedList.getSize() - 1;
+    linkedList.removeFromPosition(position);
+    newArr = linkedList.print();
+    setCharsArr([...newArr]);
+  };
+
+  const addByIndex = () => {
+
+    let newArr = [...charsArr];
+    const element = {
+      char: inputValue,
+      state: ElementStates.Default,
+    };
+    linkedList.insertAt(element, inputIndex!);
+    newArr = linkedList.print();
+
+    setCharsArr([...newArr]);
+
   }
-
-
 
   return (
     <SolutionLayout title="Связный список">
@@ -88,12 +114,26 @@ export const ListPage: FC = () => {
           extraClass={styles.button_list}
           onClick={addInTail}
         />
-        <Button text="Удалить из head" extraClass={styles.button_list} onClick={removeHead}/>
-        <Button text="Удалить из tail" extraClass={styles.button_list} />
+        <Button
+          text="Удалить из head"
+          extraClass={styles.button_list}
+          onClick={removeHead}
+        />
+        <Button
+          text="Удалить из tail"
+          extraClass={styles.button_list}
+          onClick={removeTail}
+        />
       </div>
       <div className={styles.container}>
-        <Input extraClass={styles.input} />
-        <Button text="Добавить по индексу" extraClass={styles.button_index} />
+        <Input
+          placeholder="Введите индекс"
+          extraClass={styles.input}
+          maxLength={1}
+          value={inputIndex}
+          onChange={onChangeIndex}
+        />
+        <Button text="Добавить по индексу" extraClass={styles.button_index} onClick={addByIndex}/>
         <Button text="Удалить по индексу" extraClass={styles.button_index} />
       </div>
       <ul className={styles.circles}>

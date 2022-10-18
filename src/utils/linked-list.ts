@@ -22,7 +22,7 @@ export class LinkedList<T> implements ILinkedList<T> {
     this.size = 0;
   }
 
-  insertAt(element: T, position: number) {
+  insertAt(element: T, position: number ) {
     if (position < 0 || position > this.size) {
       console.log("Enter a valid position");
       return;
