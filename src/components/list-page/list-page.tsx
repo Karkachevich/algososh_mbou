@@ -162,6 +162,8 @@ export const ListPage: FC = () => {
                 tail={index === charsArr.length - 1 ? "tail" : ""}
               />
               {charsArr.length > index + 1 && <ArrowIcon />}
+              {<Circle extraClass={styles.circle_insertion} isSmall={true}/>}
+              {<Circle extraClass={styles.circle_removal} isSmall={true}/>}
             </li>
           );
         })}
