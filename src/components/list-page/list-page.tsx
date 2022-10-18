@@ -122,7 +122,6 @@ export const ListPage: FC = () => {
 
     const position = 0;
     const element = linkedList.removeFromPosition(position);
-    console.log(element);
     newArr[position] = {
       ...newArr[position],
       char: "",
@@ -144,12 +143,31 @@ export const ListPage: FC = () => {
     setCharsArr([...newArr]);
   };
 
-  const removeTail = () => {
-    let newArr = [...charsArr];
+  const removeTail = async () => {
+    const newArr = [...charsArr];
+
     const position = linkedList.getSize() - 1;
-    linkedList.removeFromPosition(position);
-    newArr = linkedList.print();
+    const element = linkedList.removeFromPosition(position);
+    newArr[position] = {
+      ...newArr[position],
+      char: "",
+      state: ElementStates.Modified,
+      extra_circle: {
+        removal: true,
+        value: element.char,
+        state: ElementStates.Changing,
+      },
+    };
+    
     setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr.pop();
+    await delay(SHORT_DELAY_IN_MS);
+    setCharsArr([...newArr]);
+    await delay(SHORT_DELAY_IN_MS);
+    newArr[position - 1].state = ElementStates.Default;
+    setCharsArr([...newArr]);
+    
   };
 
   const addByIndex = () => {
