@@ -34,7 +34,21 @@
 }
 
 .items {
+  position: relative;
   display: flex;
   align-items: center;
   margin-right: 10px;
+}
+
+.circle_insertion {
+  position: absolute;
+  top: -70px;
+  left: 14px;
+
+}
+
+.circle_removal {
+  position: absolute;
+  top: 112px;
+  left: 14px;
 }
