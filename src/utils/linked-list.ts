@@ -74,11 +74,11 @@ export class LinkedList<T> implements ILinkedList<T> {
 
   print() {
     let curr = this.head;
-    let res = "";
+    let res = [];
     while (curr) {
-      res += `${curr.value} `;
+      res.push(curr.value);
       curr = curr.next;
     }
-    console.log(res);
+    return res;
   }
 }
