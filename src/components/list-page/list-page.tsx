@@ -40,7 +40,8 @@ export const ListPage: FC = () => {
       state: ElementStates.Default,
     };
     linkedList.append(element);
-    const oneElement = linkedList.getNodeByPosition(linkedList.getSize() - 1);
+    const position = linkedList.getSize() - 1;
+    const oneElement = linkedList.getNodeByPosition(position);
     newArr.unshift(oneElement) ;
         
     setCharsArr([...newArr]);
@@ -55,6 +56,16 @@ export const ListPage: FC = () => {
     linkedList.append(element);
     setCharsArr(linkedList.print());
   };
+
+  const removeHead = () => {
+    let newArr = [...charsArr];
+    const position = 0;
+    linkedList.removeFromPosition(position);
+    newArr = linkedList.print();
+    setCharsArr([...newArr])
+  }
+
+
 
   return (
     <SolutionLayout title="Связный список">
@@ -77,7 +88,7 @@ export const ListPage: FC = () => {
           extraClass={styles.button_list}
           onClick={addInTail}
         />
-        <Button text="Удалить из head" extraClass={styles.button_list} />
+        <Button text="Удалить из head" extraClass={styles.button_list} onClick={removeHead}/>
         <Button text="Удалить из tail" extraClass={styles.button_list} />
       </div>
       <div className={styles.container}>

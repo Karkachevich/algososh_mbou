@@ -69,20 +69,46 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 
   getNodeByPosition(position: number) {
-    if (position < 0 || position > this.size) { 
-        console.log("Enter a valid position");
+    if (position < 0 || position > this.size) {
+      console.log("Enter a valid position");
     }
 
-    let current = this.head; 
-    let index = 0; 
+    let current = this.head;
+    let index = 0;
 
-    while(index < position) {  
-        current = current!.next; 
-        index++; 
+    while (index < position) {
+      current = current!.next;
+      index++;
     }
 
     return current!.value;
-}
+  }
+
+  removeFromPosition(position: number) {
+    if (position < 0 || position > this.size) {
+      console.log("Enter a valid position");
+    }
+
+    let current = this.head;
+
+    if (position === 0) {
+      this.head = current!.next;
+    } else {
+      let prev = null;
+      let index = 0;
+
+      while (index < position) {
+        prev = current;
+        current = current!.next;
+        index++;
+      }
+
+      if (prev) prev.next = current!.next;
+    }
+
+    this.size--;
+    return current!.value;
+  }
 
   getSize() {
     return this.size;
