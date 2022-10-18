@@ -1,9 +1,9 @@
-import { TChar } from "../types/char";
+import { TCircle } from "../types/circle";
 import { TColumn } from "../types/column";
 import { ElementStates } from "../types/element-states";
 
 export const changeColor = (
-  arr: TChar[] | TColumn[],
+  arr: TCircle[] | TColumn[],
   start: number,
   end: number,
   state: ElementStates
