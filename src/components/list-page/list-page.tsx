@@ -50,7 +50,7 @@ export const ListPage: FC = () => {
     });
   }, []);
 
-  const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
+  const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
   };
@@ -77,7 +77,7 @@ export const ListPage: FC = () => {
       ...newArr[position],
       extra_circle: {
         insertion: true,
-        value: head.char,
+        value: head.value,
         state: ElementStates.Changing,
       },
     };
@@ -91,7 +91,7 @@ export const ListPage: FC = () => {
       },
     };
 
-    newArr.unshift({ char: head.char, state: ElementStates.Modified });
+    newArr.unshift({ value: head.value, state: ElementStates.Modified });
     await delay(SHORT_DELAY_IN_MS);
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
@@ -117,7 +117,7 @@ export const ListPage: FC = () => {
       ...newArr[position],
       extra_circle: {
         insertion: true,
-        value: head.char,
+        value: head.value,
         state: ElementStates.Changing,
       },
     };
@@ -131,7 +131,7 @@ export const ListPage: FC = () => {
       },
     };
 
-    newArr.push({ char: head.char, state: ElementStates.Modified });
+    newArr.push({ value: head.value, state: ElementStates.Modified });
     await delay(SHORT_DELAY_IN_MS);
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
@@ -147,11 +147,11 @@ export const ListPage: FC = () => {
     const element = linkedList.removeFromPosition(position);
     newArr[position] = {
       ...newArr[position],
-      char: "",
+      value: "",
       state: ElementStates.Modified,
       extra_circle: {
         removal: true,
-        value: element.char,
+        value: element.value,
         state: ElementStates.Changing,
       },
     };
@@ -179,11 +179,11 @@ export const ListPage: FC = () => {
     const element = linkedList.removeFromPosition(position);
     newArr[position] = {
       ...newArr[position],
-      char: "",
+      value: "",
       state: ElementStates.Modified,
       extra_circle: {
         removal: true,
-        value: element.char,
+        value: element.value,
         state: ElementStates.Changing,
       },
     };
@@ -232,7 +232,7 @@ export const ListPage: FC = () => {
         ...newArr[i],
         extra_circle: {
           insertion: true,
-          value: newElement.char,
+          value: newElement.value,
           state: ElementStates.Changing,
         },
       };
@@ -260,7 +260,7 @@ export const ListPage: FC = () => {
     };
 
     newArr.splice(position, 0, {
-      char: newElement.char,
+      value: newElement.value,
       state: ElementStates.Modified,
     });
     await delay(SHORT_DELAY_IN_MS);
@@ -295,10 +295,10 @@ export const ListPage: FC = () => {
       if (i === position) {
         newArr[i] = {
           ...newArr[i],
-          char: "",
+          value: "",
           extra_circle: {
             removal: true,
-            value: element.char,
+            value: element.value,
             state: ElementStates.Changing,
           },
         };
@@ -328,7 +328,7 @@ export const ListPage: FC = () => {
           isLimitText={true}
           extraClass={styles.input}
           value={inputValue}
-          onChange={onChange}
+          onChange={onChangeValue}
         />
         <Button
           text="Добавить в head"
@@ -389,7 +389,7 @@ export const ListPage: FC = () => {
               <Circle
                 state={item.state}
                 extraClass={styles.circle}
-                letter={item.char}
+                letter={item.value}
                 index={index}
                 head={index === 0 ? "head" : ""}
                 tail={index === charsArr.length - 1 ? "tail" : ""}

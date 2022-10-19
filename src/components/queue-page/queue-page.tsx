@@ -41,11 +41,11 @@ export const QueuePage: FC = () => {
     queue.enqueue(inputValue);
     const head = queue.getHead();
     const tail = queue.getTail();
-    newArr[head.index] = {char: head.value, head: "head"}
+    newArr[head.index] = {value: head.value, head: "head"}
     
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
     newArr[tail.index] = {
-      char: tail.value,
+      value: tail.value,
       tail: "tail",
       state: ElementStates.Changing,
     };
@@ -69,10 +69,10 @@ export const QueuePage: FC = () => {
       queue.dequeue();
       const head = queue.getHead();
       if (head.index > 0) {
-        newArr[head.index - 1] = { char: "", head: "" };
+        newArr[head.index - 1] = { value: "", head: "" };
       }
       newArr[head.index] = {
-        char: head.value,
+        value: head.value,
         head: "head",
         state: ElementStates.Changing,
       };
@@ -124,7 +124,7 @@ export const QueuePage: FC = () => {
               key={index}
               state={item.state}
               extraClass={styles.circle}
-              letter={item.char}
+              letter={item.value}
               index={index}
               head={item.head}
               tail={item.tail}
