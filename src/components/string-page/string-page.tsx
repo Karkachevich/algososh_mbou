@@ -21,12 +21,12 @@ export const StringPage: FC = () => {
     setInputValue(element);
   };
 
-  const reverse = async (inputValue: string) => {
+  const reverse = async () => {
 
     const newCharsArr: TCircle[] = inputValue.split("").map((item) => {
       return { char: item, state: ElementStates.Default };
     });
-
+    setInputValue("")
     setInProgress(true);
 
     let start: number = 0;
@@ -68,7 +68,7 @@ export const StringPage: FC = () => {
         <Button
           text="Развернуть"
           extraClass={styles.button}
-          onClick={() => reverse(inputValue)}
+          onClick={reverse}
           isLoader={inProgress}
         />
       </div>
