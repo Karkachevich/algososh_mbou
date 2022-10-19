@@ -1,4 +1,4 @@
-import React, { FC, useState, SyntheticEvent } from "react";
+import React, { FC, useState, SyntheticEvent, useMemo } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -7,12 +7,14 @@ import styles from "./stack-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
+import { Stack } from "../../utils/stack";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const StackPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TCircle[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
+  const stackArr = useMemo(() => new Stack<TCircle>(), []);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -22,25 +24,41 @@ export const StackPage: FC = () => {
   const push = async () => {
     setInProgress(true);
     setInputValue("");
+    const newArr = [...charsArr];
+
+    const position = charsArr.length;
     if (inputValue === "") return 0;
-    charsArr.push({ char: inputValue, state: ElementStates.Default });
-    charsArr.forEach((item) => {
-      item.state = ElementStates.Default;
-      item.head = "";
+    stackArr.push({
+      char: inputValue,
+      head: "top",
     });
-    setCharsArr([...charsArr]);
-    charsArr[charsArr.length - 1].head = "top";
-    charsArr[charsArr.length - 1].state = ElementStates.Changing;
-    setCharsArr([...charsArr]);
+    const newElement = stackArr.peak();
+
+    newArr.push(newElement!);
+
+    newArr.map((item) => (item.head = ""));
+    setCharsArr([...newArr]);
+    newArr[position] = {
+      ...newArr[position],
+      head: "top",
+      state: ElementStates.Changing,
+    };
+
+    setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
+    newArr[position].state = ElementStates.Default;
+    setCharsArr([...newArr]);
     setInProgress(false);
   };
 
   const pop = async () => {
+    
     if (charsArr.length > 1) {
       charsArr.pop();
-      charsArr[charsArr.length - 1].head = "top";
-      charsArr[charsArr.length - 1].state = ElementStates.Changing;
+      charsArr[charsArr.length - 1] = {
+        head: "top",
+        state: ElementStates.Changing,
+      };
       setCharsArr([...charsArr]);
       await delay(SHORT_DELAY_IN_MS);
     } else {
