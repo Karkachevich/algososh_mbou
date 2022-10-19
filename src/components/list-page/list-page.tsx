@@ -10,6 +10,19 @@ import { TCircle } from "../../types/circle";
 import { LinkedList } from "../../utils/linked-list";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { type } from "@testing-library/user-event/dist/type";
+
+type TInProgressInsertion = {
+  inProgressAddHead?: boolean;
+  inProgressAddTail?: boolean;
+  inProgressAddByIndex?: boolean;
+};
+
+type TInProgressRemoval = {
+  inProgressRemoveHead?: boolean;
+  inProgressRemoveTail?: boolean;
+  inProgressRemoveFromIndex?: boolean;
+}
 
 export const ListPage: FC = () => {
   const size: number = 4;
@@ -22,7 +35,11 @@ export const ListPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [inputIndex, setInputIndex] = useState<number>();
   const [inProgressInsertion, setInProgressInsertion] =
-    useState<boolean>(false);
+    useState<TInProgressInsertion>({
+      inProgressAddHead: false,
+      inProgressAddTail: false,
+      inProgressAddByIndex: false,
+    });
 
   const linkedList = useMemo(() => new LinkedList<TCircle>(), []);
 
@@ -44,8 +61,10 @@ export const ListPage: FC = () => {
   };
 
   const addInHead = async () => {
-    const newArr = [...charsArr];
+    setInProgressInsertion({ inProgressAddHead: true });
     setInputValue("");
+    const newArr = [...charsArr];
+
     const element = {
       char: inputValue,
       state: ElementStates.Default,
@@ -78,9 +97,12 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
+
+    setInProgressInsertion({ inProgressAddHead: false });
   };
 
   const addInTail = async () => {
+    setInProgressInsertion({ inProgressAddTail: true });
     const newArr = [...charsArr];
     setInputValue("");
     const element = {
@@ -115,6 +137,7 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position + 1].state = ElementStates.Default;
     setCharsArr([...newArr]);
+    setInProgressInsertion({ inProgressAddTail: false });
   };
 
   const removeHead = async () => {
@@ -170,8 +193,11 @@ export const ListPage: FC = () => {
   };
 
   const addByIndex = async () => {
-    const newArr = [...charsArr];
+    setInProgressInsertion({ inProgressAddByIndex: true });
     setInputValue("");
+    setInputIndex(undefined);
+    const newArr = [...charsArr];
+
     const element = {
       char: inputValue,
       state: ElementStates.Default,
@@ -222,14 +248,13 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
+    setInProgressInsertion({ inProgressAddByIndex: false });
   };
 
   const removeFromIndex = async () => {
+    setInputIndex(undefined);
     let newArr = [...charsArr];
-    setInputValue("");
-
     const position = inputIndex!;
-
     const element = linkedList.removeFromPosition(position);
 
     for (let i = 0; i <= position; i++) {
@@ -277,11 +302,15 @@ export const ListPage: FC = () => {
           text="Добавить в head"
           extraClass={styles.button_list}
           onClick={addInHead}
+          disabled={!inputValue}
+          isLoader={inProgressInsertion?.inProgressAddHead}
         />
         <Button
           text="Добавить в tail"
           extraClass={styles.button_list}
           onClick={addInTail}
+          disabled={!inputValue}
+          isLoader={inProgressInsertion?.inProgressAddTail}
         />
         <Button
           text="Удалить из head"
@@ -306,11 +335,14 @@ export const ListPage: FC = () => {
           text="Добавить по индексу"
           extraClass={styles.button_index}
           onClick={addByIndex}
+          disabled={!inputValue || !inputIndex}
+          isLoader={inProgressInsertion?.inProgressAddByIndex}
         />
         <Button
           text="Удалить по индексу"
           extraClass={styles.button_index}
           onClick={removeFromIndex}
+          disabled={!inputIndex}
         />
       </div>
       <ul className={styles.circles}>
