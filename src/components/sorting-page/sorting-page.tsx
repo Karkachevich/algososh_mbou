@@ -16,6 +16,9 @@ export const SortingPage: FC = () => {
   const [inProgressAscent, setInProgressAscent] = useState<boolean>(false);
   const [inProgressDescent, setInProgressDescent] = useState<boolean>(false);
 
+  const disabled =
+    inProgressAscent || inProgressDescent || numberArr.length === 0;
+
   const onClickNewArr = () => {
     setNumberArr(randomArr());
   };
@@ -53,7 +56,7 @@ export const SortingPage: FC = () => {
           value="selection"
           checked={sortMode === "selection"}
           onChange={() => setSortMode("selection")}
-          disabled={inProgressAscent || inProgressDescent}
+          disabled={disabled}
         />
         <RadioInput
           label="Пузырёк"
@@ -61,33 +64,27 @@ export const SortingPage: FC = () => {
           value="bubble"
           checked={sortMode === "bubble"}
           onChange={() => setSortMode("bubble")}
-          disabled={inProgressAscent || inProgressDescent}
+          disabled={disabled}
         />
         <Button
           text="По возрастанию"
           sorting={Direction.Ascending}
           extraClass={styles.button_ascending}
-          onClick={() => {
-            onClickSortAscending();
-          }}
+          onClick={onClickSortAscending}
           isLoader={inProgressAscent}
-          disabled={inProgressDescent}
+          disabled={inProgressDescent || numberArr.length === 0}
         />
         <Button
           text="По убыванию"
           sorting={Direction.Descending}
           extraClass={styles.button_descending}
-          onClick={() => {
-            onClickSortDescending();
-          }}
+          onClick={onClickSortDescending}
           isLoader={inProgressDescent}
-          disabled={inProgressAscent}
+          disabled={inProgressAscent || numberArr.length === 0}
         />
         <Button
           text="Новый массив"
-          onClick={() => {
-            onClickNewArr();
-          }}
+          onClick={onClickNewArr}
           disabled={inProgressAscent || inProgressDescent}
         />
       </div>
