@@ -31,7 +31,7 @@ export const StackPage: FC = () => {
     const position = charsArr.length;
     if (inputValue === "") return 0;
     stack.push({
-      char: inputValue,
+      value: inputValue,
       head: "top",
     });
     const newElement = stack.peak();
@@ -110,7 +110,7 @@ export const StackPage: FC = () => {
                 key={index}
                 state={item.state}
                 extraClass={styles.circle}
-                letter={item.char}
+                letter={item.value}
                 index={index}
                 head={item.head}
               />

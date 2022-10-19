@@ -80,7 +80,7 @@ export const StringPage: FC = () => {
                 key={index}
                 state={item.state}
                 extraClass={styles.circle}
-                letter={item.char}
+                letter={item.value}
               />
             );
           })}
