@@ -3,6 +3,7 @@ interface IStack<T> {
   pop: () => void;
   peak: () => T | null;
   getSize: () => number;
+  clear: () => void;
 }
 
 export class Stack<T> implements IStack<T> {
@@ -22,4 +23,5 @@ export class Stack<T> implements IStack<T> {
   };
 
   getSize = () => this.container.length;
+  clear = () => this.container.length = 0;
 }
