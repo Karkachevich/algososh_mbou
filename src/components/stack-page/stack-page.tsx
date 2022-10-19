@@ -14,7 +14,9 @@ export const StackPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TCircle[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
-  const stackArr = useMemo(() => new Stack<TCircle>(), []);
+  const stack = useMemo(() => new Stack<TCircle>(), []);
+
+  const disabled = charsArr.length === 0;
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -28,11 +30,11 @@ export const StackPage: FC = () => {
 
     const position = charsArr.length;
     if (inputValue === "") return 0;
-    stackArr.push({
+    stack.push({
       char: inputValue,
       head: "top",
     });
-    const newElement = stackArr.peak();
+    const newElement = stack.peak();
 
     newArr.push(newElement!);
 
@@ -52,21 +54,26 @@ export const StackPage: FC = () => {
   };
 
   const pop = async () => {
-    
-    if (charsArr.length > 1) {
-      charsArr.pop();
-      charsArr[charsArr.length - 1] = {
+    const newArr = [...charsArr];
+    stack.pop();
+    if (newArr.length > 1) {
+      newArr.pop();
+      newArr[newArr.length - 1] = {
+        ...newArr[newArr.length - 1],
         head: "top",
         state: ElementStates.Changing,
       };
-      setCharsArr([...charsArr]);
+      setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
+      newArr[newArr.length - 1].state = ElementStates.Default;
+      setCharsArr([...newArr]);
     } else {
-      setCharsArr([]);
+      clear();
     }
   };
 
   const clear = () => {
+    stack.clear();
     setCharsArr([]);
   };
 
@@ -91,8 +98,9 @@ export const StackPage: FC = () => {
           text="Удалить"
           extraClass={styles.button_remove}
           onClick={pop}
+          disabled={disabled}
         />
-        <Button text="Очистить" onClick={clear} />
+        <Button text="Очистить" disabled={disabled} onClick={clear} />
       </div>
       <div className={styles.circles}>
         {!!charsArr &&
