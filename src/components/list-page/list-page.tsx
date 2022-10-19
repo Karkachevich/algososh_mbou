@@ -9,20 +9,11 @@ import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { LinkedList } from "../../utils/linked-list";
 import { delay } from "../../utils/delay";
+import {
+  TInProgressInsertion,
+  TInProgressRemoval,
+} from "../../types/inProgress";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { type } from "@testing-library/user-event/dist/type";
-
-type TInProgressInsertion = {
-  inProgressAddHead?: boolean;
-  inProgressAddTail?: boolean;
-  inProgressAddByIndex?: boolean;
-};
-
-type TInProgressRemoval = {
-  inProgressRemoveHead?: boolean;
-  inProgressRemoveTail?: boolean;
-  inProgressRemoveFromIndex?: boolean;
-}
 
 export const ListPage: FC = () => {
   const size: number = 4;
@@ -40,7 +31,16 @@ export const ListPage: FC = () => {
       inProgressAddTail: false,
       inProgressAddByIndex: false,
     });
+  const [inProgressRemove, setInProgressRemove] = useState<TInProgressRemoval>({
+    inProgressRemoveHead: false,
+    inProgressRemoveTail: false,
+    inProgressRemoveFromIndex: false,
+  });
 
+  const disabled =
+    inProgressInsertion.inProgress ||
+    inProgressRemove.inProgress ||
+    charsArr.length === 0;
   const linkedList = useMemo(() => new LinkedList<TCircle>(), []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export const ListPage: FC = () => {
   };
 
   const addInHead = async () => {
-    setInProgressInsertion({ inProgressAddHead: true });
+    setInProgressInsertion({ inProgressAddHead: true, inProgress: true });
     setInputValue("");
     const newArr = [...charsArr];
 
@@ -98,11 +98,11 @@ export const ListPage: FC = () => {
     newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
 
-    setInProgressInsertion({ inProgressAddHead: false });
+    setInProgressInsertion({ inProgressAddHead: false, inProgress: false });
   };
 
   const addInTail = async () => {
-    setInProgressInsertion({ inProgressAddTail: true });
+    setInProgressInsertion({ inProgressAddTail: true, inProgress: true });
     const newArr = [...charsArr];
     setInputValue("");
     const element = {
@@ -137,12 +137,12 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position + 1].state = ElementStates.Default;
     setCharsArr([...newArr]);
-    setInProgressInsertion({ inProgressAddTail: false });
+    setInProgressInsertion({ inProgressAddTail: false, inProgress: false });
   };
 
   const removeHead = async () => {
+    setInProgressRemove({ inProgressRemoveHead: true, inProgress: true });
     const newArr = [...charsArr];
-
     const position = 0;
     const element = linkedList.removeFromPosition(position);
     newArr[position] = {
@@ -160,15 +160,21 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr.shift();
     await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
-    newArr[position].state = ElementStates.Default;
-    setCharsArr([...newArr]);
+    if (newArr.length) {
+      setCharsArr([...newArr]);
+      setInProgressRemove({ inProgressRemoveHead: false, inProgress: false });
+      await delay(SHORT_DELAY_IN_MS);
+      newArr[position].state = ElementStates.Default;
+      setCharsArr([...newArr]);
+    } else {
+      setInProgressRemove({ inProgressRemoveHead: false, inProgress: false });
+      setCharsArr([...newArr]);
+    }
   };
 
   const removeTail = async () => {
+    setInProgressRemove({ inProgressRemoveTail: true, inProgress: true });
     const newArr = [...charsArr];
-
     const position = linkedList.getSize() - 1;
     const element = linkedList.removeFromPosition(position);
     newArr[position] = {
@@ -186,14 +192,20 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr.pop();
     await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
-    newArr[position - 1].state = ElementStates.Default;
-    setCharsArr([...newArr]);
+    if (newArr.length) {
+      setCharsArr([...newArr]);
+      setInProgressRemove({ inProgressRemoveTail: false, inProgress: false });
+      await delay(SHORT_DELAY_IN_MS);
+      newArr[position - 1].state = ElementStates.Default;
+      setCharsArr([...newArr]);
+    } else {
+      setInProgressRemove({ inProgressRemoveTail: false, inProgress: false });
+      setCharsArr([...newArr]);
+    }
   };
 
   const addByIndex = async () => {
-    setInProgressInsertion({ inProgressAddByIndex: true });
+    setInProgressInsertion({ inProgressAddByIndex: true, inProgress: true });
     setInputValue("");
     setInputIndex(undefined);
     const newArr = [...charsArr];
@@ -202,6 +214,14 @@ export const ListPage: FC = () => {
       char: inputValue,
       state: ElementStates.Default,
     };
+
+    if (inputIndex! > newArr.length - 1) {
+      setInProgressInsertion({
+        inProgressAddByIndex: false,
+        inProgress: false,
+      });
+      return 0;
+    }
 
     const position = inputIndex!;
     linkedList?.insertAt(element, position);
@@ -248,12 +268,20 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr[position].state = ElementStates.Default;
     setCharsArr([...newArr]);
-    setInProgressInsertion({ inProgressAddByIndex: false });
+    setInProgressInsertion({ inProgressAddByIndex: false, inProgress: false });
   };
 
   const removeFromIndex = async () => {
+    setInProgressRemove({ inProgressRemoveFromIndex: true, inProgress: true });
     setInputIndex(undefined);
     let newArr = [...charsArr];
+    if (inputIndex! > newArr.length - 1) {
+      setInProgressRemove({
+        inProgressRemoveFromIndex: false,
+        inProgress: false,
+      });
+      return 0;
+    }
     const position = inputIndex!;
     const element = linkedList.removeFromPosition(position);
 
@@ -285,6 +313,10 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     newArr.map((item) => (item.state = ElementStates.Default));
     setCharsArr([...newArr]);
+    setInProgressRemove({
+      inProgressRemoveFromIndex: false,
+      inProgress: false,
+    });
   };
 
   return (
@@ -316,11 +348,15 @@ export const ListPage: FC = () => {
           text="Удалить из head"
           extraClass={styles.button_list}
           onClick={removeHead}
+          disabled={disabled}
+          isLoader={inProgressRemove.inProgressRemoveHead}
         />
         <Button
           text="Удалить из tail"
           extraClass={styles.button_list}
           onClick={removeTail}
+          disabled={disabled}
+          isLoader={inProgressRemove.inProgressRemoveTail}
         />
       </div>
       <div className={styles.container}>
@@ -343,6 +379,7 @@ export const ListPage: FC = () => {
           extraClass={styles.button_index}
           onClick={removeFromIndex}
           disabled={!inputIndex}
+          isLoader={inProgressRemove.inProgressRemoveFromIndex}
         />
       </div>
       <ul className={styles.circles}>
