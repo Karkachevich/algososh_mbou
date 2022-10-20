@@ -7,7 +7,7 @@ import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
-import { LinkedList } from "../../utils/linked-list";
+import { LinkedListNode } from "../../utils/linked-list";
 import { delay } from "../../utils/delay";
 import {
   TInProgressInsertion,
@@ -41,7 +41,7 @@ export const ListPage: FC = () => {
     inProgressInsertion.inProgress ||
     inProgressRemove.inProgress ||
     charsArr.length === 0;
-  const linkedList = useMemo(() => new LinkedList<TCircle>(), []);
+  const linkedList = useMemo(() => new LinkedListNode<TCircle>(), []);
 
   useEffect(() => {
     const newArr = [...charsArr];
