@@ -26,19 +26,17 @@ export const StackPage: FC = () => {
   const push = async () => {
     setInProgress(true);
     setInputValue("");
-    const newArr = [...charsArr];
 
-    const position = charsArr.length;
     if (inputValue === "") return 0;
     stack.push({
       value: inputValue,
       head: "top",
     });
-    const newElement = stack.peak();
-
-    newArr.push(newElement!);
+    const newArr = [...stack.getElemets()];
+    const position = newArr.length - 1;
 
     newArr.map((item) => (item.head = ""));
+
     setCharsArr([...newArr]);
     newArr[position] = {
       ...newArr[position],
@@ -54,10 +52,10 @@ export const StackPage: FC = () => {
   };
 
   const pop = async () => {
-    const newArr = [...charsArr];
     stack.pop();
-    if (newArr.length > 1) {
-      newArr.pop();
+    const newArr = [...stack.getElemets()];
+
+    if (newArr.length > 0) {
       newArr[newArr.length - 1] = {
         ...newArr[newArr.length - 1],
         head: "top",

@@ -4,7 +4,7 @@ import styles from "./fibonacci-page.module.css";
 import { Input } from "../ui/input/input";
 import { Circle } from "../ui/circle/circle";
 import { Button } from "../ui/button/button";
-import { fib } from "../../utils/fibonacci";
+import { getFibonacciNumbers } from "../../utils/fibonacci";
 import { delay } from "../../utils/delay";
 import { DELAY_IN_MS } from "../../constants/delays";
 
@@ -23,7 +23,7 @@ export const FibonacciPage: React.FC = () => {
     if (value <= 0 || value > 19) {
       return 0;
     }
-    const arrFibNums: number[] = fib(value);
+    const arrFibNums: number[] = getFibonacciNumbers(value);
     const newArr: number[] = [];
     setInProgress(true);
     for (let num of arrFibNums) {
