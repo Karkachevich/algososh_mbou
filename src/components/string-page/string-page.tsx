@@ -24,7 +24,7 @@ export const StringPage: FC = () => {
   const reverse = async () => {
 
     const newCharsArr: TCircle[] = inputValue.split("").map((item) => {
-      return { char: item, state: ElementStates.Default };
+      return { value: item, state: ElementStates.Default };
     });
     setInputValue("")
     setInProgress(true);

@@ -7,7 +7,7 @@ import styles from "./stack-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
-import { Stack } from "../../utils/stack";
+import { Stack } from "./utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const StackPage: FC = () => {
@@ -52,6 +52,14 @@ export const StackPage: FC = () => {
   };
 
   const pop = async () => {
+
+    charsArr[charsArr.length - 1] = {
+      ...charsArr[charsArr.length - 1],
+      state: ElementStates.Changing,
+    };
+    setCharsArr([...charsArr]);
+    await delay(SHORT_DELAY_IN_MS);
+
     stack.pop();
     const newArr = [...stack.getElemets()];
 
@@ -59,7 +67,7 @@ export const StackPage: FC = () => {
       newArr[newArr.length - 1] = {
         ...newArr[newArr.length - 1],
         head: "top",
-        state: ElementStates.Changing,
+        state: ElementStates.Default,
       };
       setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
@@ -90,7 +98,7 @@ export const StackPage: FC = () => {
           text="Добавить"
           extraClass={styles.button_add}
           onClick={push}
-          disabled={inProgress}
+          disabled={inProgress || !inputValue}
         />
         <Button
           text="Удалить"
