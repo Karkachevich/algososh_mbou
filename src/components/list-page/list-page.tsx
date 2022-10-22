@@ -7,7 +7,7 @@ import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
-import { LinkedListNode } from "./utils";
+import { LinkedListNode } from "./linked-list";
 import { delay } from "../../utils/delay";
 import {
   TInProgressInsertion,
@@ -39,7 +39,7 @@ export const ListPage: FC = () => {
   const linkedList = useMemo(() => new LinkedListNode<TCircle>(randomArr), []);
 
   useEffect(() => {
-    setCharsArr([...linkedList.print()]);
+    setCharsArr(linkedList.print());
   }, []);
 
   const installAndDelay = async (arr: TCircle[]) => {
@@ -48,9 +48,7 @@ export const ListPage: FC = () => {
   };
 
   const disabled =
-    inProgressInsertion.inProgress ||
-    inProgressRemove.inProgress ||
-    linkedList.getSize() === 0;
+    inProgressInsertion.inProgress || inProgressRemove.inProgress;
 
   const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -69,17 +67,15 @@ export const ListPage: FC = () => {
       state: ElementStates.Default,
     };
 
-    const newArr = [...linkedList.print()];
-    linkedList.prepend(element);
-
+    const newArr = linkedList.print();
+   
     const position = 0;
-    const head = linkedList.getNodeByPosition(position);
 
     newArr[position] = {
       ...newArr[position],
       extra_circle: {
         insertion: true,
-        value: head!.value,
+        value: inputValue,
         state: ElementStates.Changing,
       },
     };
@@ -90,10 +86,17 @@ export const ListPage: FC = () => {
       ...newArr[position],
       extra_circle: undefined,
     };
+
     newArr.unshift({
       value: inputValue,
       state: ElementStates.Modified,
     });
+
+    if(linkedList.getSize() === 0){
+        newArr.pop();
+    }
+
+    linkedList.insertAt(element, position);
 
     await installAndDelay(newArr);
 
@@ -106,7 +109,7 @@ export const ListPage: FC = () => {
   const addInTail = async () => {
     setInProgressInsertion({ inProgressAddTail: true, inProgress: true });
 
-    const newArr = [...linkedList.print()];
+    const newArr = linkedList.print();
     const element = {
       value: inputValue,
       state: ElementStates.Default,
@@ -141,7 +144,7 @@ export const ListPage: FC = () => {
 
   const removeHead = async () => {
     setInProgressRemove({ inProgressRemoveHead: true, inProgress: true });
-    const newArr = [...linkedList.print()];
+    const newArr = linkedList.print();
 
     const position = 0;
     const element = linkedList.removeFromPosition(position);
@@ -164,7 +167,7 @@ export const ListPage: FC = () => {
 
   const removeTail = async () => {
     setInProgressRemove({ inProgressRemoveTail: true, inProgress: true });
-    const newArr = [...linkedList.print()];
+    const newArr = linkedList.print();
     const position = linkedList.getSize() - 1;
     const element = linkedList.removeFromPosition(position);
     newArr[position] = {
@@ -185,7 +188,7 @@ export const ListPage: FC = () => {
   const addByIndex = async () => {
     setInProgressInsertion({ inProgressAddByIndex: true, inProgress: true });
     setInputIndex(undefined);
-    const newArr = [...linkedList.print()];
+    const newArr = linkedList.print();
 
     const element = {
       value: inputValue,
@@ -248,7 +251,7 @@ export const ListPage: FC = () => {
   const removeFromIndex = async () => {
     setInProgressRemove({ inProgressRemoveFromIndex: true, inProgress: true });
     setInputIndex(undefined);
-    let newArr = [...linkedList.print()];
+    const newArr = linkedList.print();
     if (inputIndex! > newArr.length - 1) {
       setInProgressRemove({
         inProgressRemoveFromIndex: false,

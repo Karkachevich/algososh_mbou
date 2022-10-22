@@ -8,7 +8,7 @@ import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { Queue } from "./utils";
+import { Queue } from "./queue";
 
 export const QueuePage: FC = () => {
   const size: number = 7;
@@ -46,13 +46,10 @@ export const QueuePage: FC = () => {
     newArr[head.index] = { value: head.value, head: "head" };
     setHeadIndex(head.index);
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
-    newArr[tail.index] = {
-      ...newArr[tail.index],
-      value: tail.value,
-      tail: "tail",
-      state: ElementStates.Changing,
-    };
-
+    newArr[tail.index].tail = "tail";
+    newArr[tail.index].value = tail.value;
+    newArr[tail.index].state = ElementStates.Changing;
+   
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr[tail.index].state = ElementStates.Default;
@@ -74,13 +71,10 @@ export const QueuePage: FC = () => {
       if (head.index > 0) {
         newArr[head.index - 1] = { value: "", head: "" };
       }
-      newArr[head.index] = {
-        ...newArr[head.index],
-        value: head.value,
-        head: "head",
-        state: ElementStates.Changing,
-      };
-
+      newArr[head.index].head = "head";
+      newArr[head.index].value = head.value;
+      newArr[head.index].state = ElementStates.Changing;
+      
       setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
       newArr[head.index].state = ElementStates.Default;
