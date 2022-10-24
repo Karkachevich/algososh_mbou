@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  margin: 0 auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.radio {
+  margin-right: 50px;
+}
+
+.button_ascending {
+  width: 205px;
+  margin-right: 12px;
+}
+
+.button_descending {
+  width: 186px;
+  margin-right: 80px;
+}
+
+.columns {
+  display: flex;
+  margin: 48px auto auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.column {
+  margin-right: 10px;
+}

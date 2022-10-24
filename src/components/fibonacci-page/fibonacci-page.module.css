@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: center;
+    height: 90px;
+
+}
+
+.input {
+    max-width: 377px;
+    margin-right: 12px;
+}
+
+.button {
+    width: 178px;
+}
+
+.circles {
+    display: flex;
+    margin: 100px auto auto;
+    flex-wrap: wrap;
+    row-gap: 50px;
+    justify-content: center;
+    max-width: 950px;
+}
+
+.circle {
+   margin-right: 10px; 
+}
