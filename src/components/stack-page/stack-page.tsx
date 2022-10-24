@@ -18,7 +18,7 @@ export const StackPage: FC = () => {
   const stack = useMemo(() => new Stack<TCircle>(), []);
 
   const disabled = charsArr.length === 0;
-
+  const maxLength: number = 4;
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -38,21 +38,21 @@ export const StackPage: FC = () => {
 
     newArr.map((item) => (item.head = ""));
 
-    setCharsArr([...newArr]);
+    setCharsArr(newArr);
     newArr[position].head = "top";
     newArr[position].state = ElementStates.Changing;
 
-    setCharsArr([...newArr]);
+    setCharsArr(newArr);
     await delay(SHORT_DELAY_IN_MS);
     newArr[position].state = ElementStates.Default;
-    setCharsArr([...newArr]);
+    setCharsArr(newArr);
     setInProgressAdd(false);
   };
 
   const pop = async () => {
     setInProgressDelete(true);
     charsArr[charsArr.length - 1].state = ElementStates.Changing;
-    setCharsArr([...charsArr]);
+    setCharsArr(charsArr);
     await delay(SHORT_DELAY_IN_MS);
 
     stack.pop();
@@ -61,10 +61,10 @@ export const StackPage: FC = () => {
     if (newArr.length > 0) {
       newArr[newArr.length - 1].head = "top";
       newArr[newArr.length - 1].state = ElementStates.Default; 
-      setCharsArr([...newArr]);
+      setCharsArr(newArr);
       await delay(SHORT_DELAY_IN_MS);
       newArr[newArr.length - 1].state = ElementStates.Default;
-      setCharsArr([...newArr]);
+      setCharsArr(newArr);
     } else {
       clear();
       setInProgressDelete(false);
@@ -83,7 +83,7 @@ export const StackPage: FC = () => {
         <Input
           extraClass={styles.input}
           type="text"
-          maxLength={4}
+          maxLength={maxLength}
           isLimitText={true}
           value={inputValue}
           onChange={onChange}
