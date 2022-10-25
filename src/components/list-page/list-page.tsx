@@ -7,7 +7,7 @@ import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
-import { LinkedListNode } from "../../utils/linked-list";
+import { LinkedListNode } from "./linked-list";
 import { delay } from "../../utils/delay";
 import {
   TInProgressInsertion,
@@ -18,11 +18,11 @@ import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 export const ListPage: FC = () => {
   const size: number = 4;
   const randomArr: TCircle[] = [...Array(size)].map(() => ({
-    char: String(Math.floor(Math.random() * 100)),
+    value: String(Math.floor(Math.random() * 100)),
     state: ElementStates.Default,
   }));
 
-  const [charsArr, setCharsArr] = useState<TCircle[]>(randomArr);
+  const [charsArr, setCharsArr] = useState<TCircle[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [inputIndex, setInputIndex] = useState<number>();
   const [inProgressInsertion, setInProgressInsertion] =
@@ -36,19 +36,21 @@ export const ListPage: FC = () => {
     inProgressRemoveTail: false,
     inProgressRemoveFromIndex: false,
   });
-
-  const disabled =
-    inProgressInsertion.inProgress ||
-    inProgressRemove.inProgress ||
-    charsArr.length === 0;
-  const linkedList = useMemo(() => new LinkedListNode<TCircle>(), []);
+  const linkedList = useMemo(() => new LinkedListNode<TCircle>(randomArr), []);
+  const maxLengthValue: number = 4;
+  const maxLengthIndex: number = 1;
 
   useEffect(() => {
-    const newArr = [...charsArr];
-    newArr.forEach((item, index) => {
-      linkedList?.insertAt(item, index);
-    });
+    setCharsArr(linkedList.print());
   }, []);
+
+  const installAndDelay = async (arr: TCircle[]) => {
+    setCharsArr([...arr]);
+    await delay(SHORT_DELAY_IN_MS);
+  };
+
+  const disabled =
+    inProgressInsertion.inProgress || inProgressRemove.inProgress;
 
   const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -62,156 +64,136 @@ export const ListPage: FC = () => {
 
   const addInHead = async () => {
     setInProgressInsertion({ inProgressAddHead: true, inProgress: true });
-    setInputValue("");
-    const newArr = [...charsArr];
-
     const element = {
-      char: inputValue,
+      value: inputValue,
       state: ElementStates.Default,
     };
 
+    const newArr = linkedList.print();
+   
     const position = 0;
-    linkedList?.insertAt(element, position);
-    const head = linkedList.getNodeByPosition(position);
+
     newArr[position] = {
       ...newArr[position],
       extra_circle: {
         insertion: true,
-        value: head.value,
+        value: inputValue,
         state: ElementStates.Changing,
       },
     };
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
+
+    await installAndDelay(newArr);
+
     newArr[position] = {
       ...newArr[position],
-      extra_circle: {
-        insertion: false,
-        value: undefined,
-      },
+      extra_circle: undefined,
     };
 
-    newArr.unshift({ value: head.value, state: ElementStates.Modified });
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
-    newArr[position].state = ElementStates.Default;
-    setCharsArr([...newArr]);
+    newArr.unshift({
+      value: inputValue,
+      state: ElementStates.Modified,
+    });
 
+    if(linkedList.getSize() === 0){
+        newArr.pop();
+    }
+
+    linkedList.insertAt(element, position);
+
+    await installAndDelay(newArr);
+
+    newArr[position].state = ElementStates.Default;
+
+    setInputValue("");
     setInProgressInsertion({ inProgressAddHead: false, inProgress: false });
   };
 
   const addInTail = async () => {
     setInProgressInsertion({ inProgressAddTail: true, inProgress: true });
-    const newArr = [...charsArr];
-    setInputValue("");
+
+    const newArr = linkedList.print();
     const element = {
-      char: inputValue,
+      value: inputValue,
       state: ElementStates.Default,
     };
 
-    const position = linkedList.getSize() - 1;
-    linkedList?.insertAt(element, position);
-    const head = linkedList.getNodeByPosition(position);
+    linkedList?.append(element);
+
+    const position = newArr.length - 1;
     newArr[position] = {
       ...newArr[position],
       extra_circle: {
         insertion: true,
-        value: head.value,
+        value: inputValue,
         state: ElementStates.Changing,
       },
     };
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
+    await installAndDelay(newArr);
+
     newArr[position] = {
       ...newArr[position],
-      extra_circle: {
-        insertion: false,
-        value: undefined,
-      },
+      extra_circle: undefined,
     };
-
-    newArr.push({ value: head.value, state: ElementStates.Modified });
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
+    newArr.push({
+      value: inputValue,
+      state: ElementStates.Modified,
+    });
+    await installAndDelay(newArr);
     newArr[position + 1].state = ElementStates.Default;
-    setCharsArr([...newArr]);
+    setInputValue("");
     setInProgressInsertion({ inProgressAddTail: false, inProgress: false });
   };
 
   const removeHead = async () => {
     setInProgressRemove({ inProgressRemoveHead: true, inProgress: true });
-    const newArr = [...charsArr];
+    const newArr = linkedList.print();
+
     const position = 0;
     const element = linkedList.removeFromPosition(position);
+
     newArr[position] = {
       ...newArr[position],
       value: "",
-      state: ElementStates.Modified,
       extra_circle: {
         removal: true,
         value: element.value,
         state: ElementStates.Changing,
       },
     };
-
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
+    await installAndDelay(newArr);
     newArr.shift();
-    await delay(SHORT_DELAY_IN_MS);
-    if (newArr.length) {
-      setCharsArr([...newArr]);
-      setInProgressRemove({ inProgressRemoveHead: false, inProgress: false });
-      await delay(SHORT_DELAY_IN_MS);
-      newArr[position].state = ElementStates.Default;
-      setCharsArr([...newArr]);
-    } else {
-      setInProgressRemove({ inProgressRemoveHead: false, inProgress: false });
-      setCharsArr([...newArr]);
-    }
+    setCharsArr(newArr);
+
+    setInProgressRemove({ inProgressRemoveHead: false, inProgress: false });
   };
 
   const removeTail = async () => {
     setInProgressRemove({ inProgressRemoveTail: true, inProgress: true });
-    const newArr = [...charsArr];
+    const newArr = linkedList.print();
     const position = linkedList.getSize() - 1;
     const element = linkedList.removeFromPosition(position);
     newArr[position] = {
       ...newArr[position],
       value: "",
-      state: ElementStates.Modified,
       extra_circle: {
         removal: true,
         value: element.value,
         state: ElementStates.Changing,
       },
     };
-
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
+    await installAndDelay(newArr);
     newArr.pop();
-    await delay(SHORT_DELAY_IN_MS);
-    if (newArr.length) {
-      setCharsArr([...newArr]);
-      setInProgressRemove({ inProgressRemoveTail: false, inProgress: false });
-      await delay(SHORT_DELAY_IN_MS);
-      newArr[position - 1].state = ElementStates.Default;
-      setCharsArr([...newArr]);
-    } else {
-      setInProgressRemove({ inProgressRemoveTail: false, inProgress: false });
-      setCharsArr([...newArr]);
-    }
+    setCharsArr(newArr);
+    setInProgressRemove({ inProgressRemoveTail: false, inProgress: false });
   };
 
   const addByIndex = async () => {
     setInProgressInsertion({ inProgressAddByIndex: true, inProgress: true });
-    setInputValue("");
     setInputIndex(undefined);
-    const newArr = [...charsArr];
+    const newArr = linkedList.print();
 
     const element = {
-      char: inputValue,
+      value: inputValue,
       state: ElementStates.Default,
     };
 
@@ -232,7 +214,7 @@ export const ListPage: FC = () => {
         ...newArr[i],
         extra_circle: {
           insertion: true,
-          value: newElement.value,
+          value: newElement!.value,
           state: ElementStates.Changing,
         },
       };
@@ -246,8 +228,7 @@ export const ListPage: FC = () => {
             state: ElementStates.Changing,
           },
         };
-        await delay(SHORT_DELAY_IN_MS);
-        setCharsArr([...newArr]);
+        await installAndDelay(newArr);
       }
     }
 
@@ -260,21 +241,19 @@ export const ListPage: FC = () => {
     };
 
     newArr.splice(position, 0, {
-      value: newElement.value,
+      value: newElement!.value,
       state: ElementStates.Modified,
     });
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
+    await installAndDelay(newArr);
     newArr[position].state = ElementStates.Default;
-    setCharsArr([...newArr]);
+    setInputValue("");
     setInProgressInsertion({ inProgressAddByIndex: false, inProgress: false });
   };
 
   const removeFromIndex = async () => {
     setInProgressRemove({ inProgressRemoveFromIndex: true, inProgress: true });
     setInputIndex(undefined);
-    let newArr = [...charsArr];
+    const newArr = linkedList.print();
     if (inputIndex! > newArr.length - 1) {
       setInProgressRemove({
         inProgressRemoveFromIndex: false,
@@ -290,8 +269,7 @@ export const ListPage: FC = () => {
         ...newArr[i],
         state: ElementStates.Changing,
       };
-      await delay(SHORT_DELAY_IN_MS);
-      setCharsArr([...newArr]);
+      await installAndDelay(newArr);
       if (i === position) {
         newArr[i] = {
           ...newArr[i],
@@ -302,17 +280,13 @@ export const ListPage: FC = () => {
             state: ElementStates.Changing,
           },
         };
-        await delay(SHORT_DELAY_IN_MS);
-        setCharsArr([...newArr]);
+        await installAndDelay(newArr);
       }
     }
 
     newArr.splice(position, 1);
-    await delay(SHORT_DELAY_IN_MS);
-    setCharsArr([...newArr]);
-    await delay(SHORT_DELAY_IN_MS);
+    await installAndDelay(newArr);
     newArr.map((item) => (item.state = ElementStates.Default));
-    setCharsArr([...newArr]);
     setInProgressRemove({
       inProgressRemoveFromIndex: false,
       inProgress: false,
@@ -324,24 +298,25 @@ export const ListPage: FC = () => {
       <div className={styles.container}>
         <Input
           type="text"
-          maxLength={4}
+          maxLength={maxLengthValue}
           isLimitText={true}
           extraClass={styles.input}
           value={inputValue}
           onChange={onChangeValue}
+          disabled={disabled}
         />
         <Button
           text="Добавить в head"
           extraClass={styles.button_list}
           onClick={addInHead}
-          disabled={!inputValue}
+          disabled={!inputValue || disabled}
           isLoader={inProgressInsertion?.inProgressAddHead}
         />
         <Button
           text="Добавить в tail"
           extraClass={styles.button_list}
           onClick={addInTail}
-          disabled={!inputValue}
+          disabled={!inputValue || disabled}
           isLoader={inProgressInsertion?.inProgressAddTail}
         />
         <Button
@@ -363,22 +338,23 @@ export const ListPage: FC = () => {
         <Input
           placeholder="Введите индекс"
           extraClass={styles.input}
-          maxLength={1}
+          maxLength={maxLengthIndex}
           value={inputIndex || ""}
           onChange={onChangeIndex}
+          disabled={disabled}
         />
         <Button
           text="Добавить по индексу"
           extraClass={styles.button_index}
           onClick={addByIndex}
-          disabled={!inputValue || !inputIndex}
+          disabled={!inputValue || !inputIndex || disabled}
           isLoader={inProgressInsertion?.inProgressAddByIndex}
         />
         <Button
           text="Удалить по индексу"
           extraClass={styles.button_index}
           onClick={removeFromIndex}
-          disabled={!inputIndex}
+          disabled={!inputIndex || disabled}
           isLoader={inProgressRemove.inProgressRemoveFromIndex}
         />
       </div>

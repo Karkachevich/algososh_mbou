@@ -8,12 +8,12 @@ import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { Queue } from "../../utils/queue";
+import { Queue } from "./queue";
 
 export const QueuePage: FC = () => {
   const size: number = 7;
   const queueArr: TCircle[] = [...Array(size)].map(() => ({
-    char: "",
+    value: "",
     state: ElementStates.Default,
   }));
 
@@ -21,6 +21,7 @@ export const QueuePage: FC = () => {
   const [charsArr, setCharsArr] = useState<TCircle[]>(queueArr);
   const [inProgressEnqueue, setInProgressEnqueue] = useState<boolean>(false);
   const [inProgressDenqueue, setInProgressDenqueue] = useState<boolean>(false);
+  const [headIndex, setHeadIndex] = useState<number | null>(null);
   const queue = useMemo(() => new Queue<string>(size), []);
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
@@ -31,6 +32,7 @@ export const QueuePage: FC = () => {
   const clear = () => {
     queue.clear();
     setCharsArr([...queueArr]);
+    setHeadIndex(null);
   };
 
   const enqueue = async () => {
@@ -41,15 +43,13 @@ export const QueuePage: FC = () => {
     queue.enqueue(inputValue);
     const head = queue.getHead();
     const tail = queue.getTail();
-    newArr[head.index] = {value: head.value, head: "head"}
-    
+    newArr[head.index] = { value: head.value, head: "head" };
+    setHeadIndex(head.index);
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
-    newArr[tail.index] = {
-      value: tail.value,
-      tail: "tail",
-      state: ElementStates.Changing,
-    };
-
+    newArr[tail.index].tail = "tail";
+    newArr[tail.index].value = tail.value;
+    newArr[tail.index].state = ElementStates.Changing;
+   
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr[tail.index].state = ElementStates.Default;
@@ -71,11 +71,9 @@ export const QueuePage: FC = () => {
       if (head.index > 0) {
         newArr[head.index - 1] = { value: "", head: "" };
       }
-      newArr[head.index] = {
-        value: head.value,
-        head: "head",
-        state: ElementStates.Changing,
-      };
+      newArr[head.index].head = "head";
+      newArr[head.index].value = head.value;
+      newArr[head.index].state = ElementStates.Changing;
       
       setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
@@ -101,20 +99,26 @@ export const QueuePage: FC = () => {
           text="Добавить"
           extraClass={styles.button_add}
           onClick={enqueue}
-          disabled={inProgressDenqueue}
+          disabled={
+            inProgressDenqueue ||
+            !inputValue ||
+            charsArr[charsArr.length - 1].value !== ""
+          }
           isLoader={inProgressEnqueue}
         />
         <Button
           text="Удалить"
           extraClass={styles.button_remove}
           onClick={dequeue}
-          disabled={inProgressEnqueue}
+          disabled={inProgressEnqueue || headIndex === null}
           isLoader={inProgressDenqueue}
         />
         <Button
           text="Очистить"
           onClick={clear}
-          disabled={inProgressEnqueue || inProgressDenqueue}
+          disabled={
+            inProgressEnqueue || inProgressDenqueue || headIndex === null
+          }
         />
       </div>
       <div className={styles.circles}>

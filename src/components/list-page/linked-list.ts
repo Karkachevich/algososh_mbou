@@ -17,15 +17,21 @@ export interface ILinkedList<T> {
 export class LinkedListNode<T> implements ILinkedList<T> {
   private head: Node<T> | null;
   private size: number;
-  constructor() {
+
+  constructor(initialState?: T[]) {
     this.head = null;
     this.size = 0;
+    initialState?.forEach((element) => {
+      this.append(element);
+    });
   }
+
+
 
   insertAt(element: T, position: number ) {
     if (position < 0 || position > this.size) {
       console.log("Enter a valid position");
-      return;
+      return null;
     } else {
       const node = new Node(element);
 
@@ -59,7 +65,7 @@ export class LinkedListNode<T> implements ILinkedList<T> {
       this.head = node;
     } else {
       current = this.head;
-      while (current.next) {
+      while (current && current.next) {
         current = current.next;
       }
 
@@ -68,9 +74,21 @@ export class LinkedListNode<T> implements ILinkedList<T> {
     this.size++;
   }
 
+  prepend(element: T) {
+    let node = new Node(element);
+
+    if (!this.head) {
+      this.head = node;
+    }
+    node.next = this.head;
+    this.head = node;
+    this.size++;
+  }
+
   getNodeByPosition(position: number) {
     if (position < 0 || position > this.size) {
       console.log("Enter a valid position");
+      return null;
     }
 
     let current = this.head;

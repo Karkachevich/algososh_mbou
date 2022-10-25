@@ -10,6 +10,6 @@ export type TCircle = {
       removal?: boolean;
       value?: string | null;
       state?: ElementStates;
-    }
+    } | undefined;
     
   }

@@ -7,8 +7,7 @@ import styles from "./sorting-page.module.css";
 import { TColumn } from "../../types/column";
 import { Column } from "../ui/column/column";
 import { randomArr } from "../../utils/random-array";
-import { selectionSort } from "../../utils/selection-sorting";
-import { bubbleSort } from "../../utils/bubble-sorting";
+import { bubbleSort, selectionSort } from "./utils";
 
 export const SortingPage: FC = () => {
   const [numberArr, setNumberArr] = useState<TColumn[]>([]);
