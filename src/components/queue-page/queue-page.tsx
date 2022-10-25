@@ -23,6 +23,7 @@ export const QueuePage: FC = () => {
   const [inProgressDenqueue, setInProgressDenqueue] = useState<boolean>(false);
   const [headIndex, setHeadIndex] = useState<number | null>(null);
   const queue = useMemo(() => new Queue<string>(size), []);
+  const maxLength: number = 4;
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -90,7 +91,7 @@ export const QueuePage: FC = () => {
         <Input
           extraClass={styles.input}
           type="text"
-          maxLength={4}
+          maxLength={maxLength}
           isLimitText={true}
           value={inputValue}
           onChange={onChange}
