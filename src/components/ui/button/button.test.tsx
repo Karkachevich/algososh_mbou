@@ -1,3 +1,10 @@
 import { Button } from "./button";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from "@testing-library/react";
+
+describe('Корректность отрисовки кнопки', () => {
+    it('кнопки с текстом', () => {
+        const button = render(<Button text="Добавить"/>);
+        expect(button).toMatchSnapshot();
+    });
+
+})
