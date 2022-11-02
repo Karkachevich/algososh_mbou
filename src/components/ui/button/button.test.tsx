@@ -17,4 +17,9 @@ describe('Корректность отрисовки кнопки', () => {
         expect(button).toMatchSnapshot();
     });
 
+    it('кнопки с индикацией загрузки', () => {
+        const button = render(<Button isLoader={true}/>);
+        expect(button).toMatchSnapshot();
+    });
+
 })
