@@ -24,4 +24,9 @@ describe("Корректность отрисовки элемента", () => {
     const circle = render(<Circle letter={'Q'}/>);
     expect(circle).toMatchSnapshot();
   });
+
+  it("с head", () => {
+    const circle = render(<Circle head={'head'}/>);
+    expect(circle).toMatchSnapshot();
+  });
 });
