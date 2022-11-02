@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Корректность отрисовки кнопки кнопки с текстом 1`] = `
+exports[`Корректность отрисовки кнопки кнопки без текста 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -11,9 +11,7 @@ Object {
       >
         <p
           class="text undefined"
-        >
-          Добавить
-        </p>
+        />
       </button>
     </div>
   </body>,
@@ -24,9 +22,7 @@ Object {
     >
       <p
         class="text undefined"
-      >
-        Добавить
-      </p>
+      />
     </button>
   </div>,
   "debug": [Function],
@@ -83,7 +79,7 @@ Object {
 }
 `;
 
-exports[`Корректность отрисовки кнопки с текстом Button with text 1`] = `
+exports[`Корректность отрисовки кнопки кнопки с текстом 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>

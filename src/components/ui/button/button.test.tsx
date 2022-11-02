@@ -7,4 +7,9 @@ describe('Корректность отрисовки кнопки', () => {
         expect(button).toMatchSnapshot();
     });
 
+    it('кнопки без текста', () => {
+        const button = render(<Button />);
+        expect(button).toMatchSnapshot();
+    });
+
 })
