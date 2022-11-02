@@ -21,12 +21,17 @@ describe("Корректность отрисовки элемента", () => {
   });
 
   it("с буквами", () => {
-    const circle = render(<Circle letter={'Q'}/>);
+    const circle = render(<Circle letter={"Q"} />);
     expect(circle).toMatchSnapshot();
   });
 
   it("с head", () => {
-    const circle = render(<Circle head={'head'}/>);
+    const circle = render(<Circle head={"head"} />);
+    expect(circle).toMatchSnapshot();
+  });
+
+  it("с react-элементом в head", () => {
+    const circle = render(<Circle head={<Circle />} />);
     expect(circle).toMatchSnapshot();
   });
 });
