@@ -34,4 +34,10 @@ describe("Корректность отрисовки элемента", () => {
     const circle = render(<Circle head={<Circle />} />);
     expect(circle).toMatchSnapshot();
   });
+
+  it("с tail", () => {
+    const circle = render(<Circle tail={"tail"} />);
+    expect(circle).toMatchSnapshot();
+  });
+  
 });
