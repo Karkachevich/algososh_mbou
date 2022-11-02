@@ -13,3 +13,10 @@ import { render } from "@testing-library/react";
 //в состоянии default;
 //в состоянии changing;
 //в состоянии modified.
+
+describe('Корректность отрисовки элемента', () => {
+    it('без буквы', () => {
+        const circle = render(<Circle/>);
+        expect(circle).toMatchSnapshot();
+    })
+})
