@@ -1,7 +1,7 @@
 import { Circle } from "./circle";
 import { render } from "@testing-library/react";
 
-//Корректность отрисовки элемента 
+//Корректность отрисовки элемента
 //без буквы;
 //с буквами (Snapshot);
 //с head (Snapshot);
@@ -14,9 +14,14 @@ import { render } from "@testing-library/react";
 //в состоянии changing;
 //в состоянии modified.
 
-describe('Корректность отрисовки элемента', () => {
-    it('без буквы', () => {
-        const circle = render(<Circle/>);
-        expect(circle).toMatchSnapshot();
-    })
-})
+describe("Корректность отрисовки элемента", () => {
+  it("без буквы", () => {
+    const circle = render(<Circle />);
+    expect(circle).toMatchSnapshot();
+  });
+
+  it("с буквами", () => {
+    const circle = render(<Circle letter={'Q'}/>);
+    expect(circle).toMatchSnapshot();
+  });
+});
