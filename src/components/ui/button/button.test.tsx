@@ -12,4 +12,9 @@ describe('Корректность отрисовки кнопки', () => {
         expect(button).toMatchSnapshot();
     });
 
+    it('заблокированной кнопки', () => {
+        const button = render(<Button disabled={true}/>);
+        expect(button).toMatchSnapshot();
+    });
+
 })
