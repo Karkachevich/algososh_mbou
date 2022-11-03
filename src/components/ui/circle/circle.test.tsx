@@ -1,4 +1,5 @@
 import { Circle } from "./circle";
+import { ElementStates } from "../../../types/element-states";
 import { render } from "@testing-library/react";
 
 //Корректность отрисовки элемента
@@ -52,6 +53,11 @@ describe("Корректность отрисовки элемента", () => {
 
   it("с пропcом isSmall ===  true", () => {
     const circle = render(<Circle isSmall={true} />);
+    expect(circle).toMatchSnapshot();
+  });
+
+  it("в состоянии default", () => {
+    const circle = render(<Circle state={ElementStates.Default} />);
     expect(circle).toMatchSnapshot();
   });
 
