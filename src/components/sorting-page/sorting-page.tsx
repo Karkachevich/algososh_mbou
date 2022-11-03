@@ -22,27 +22,32 @@ export const SortingPage: FC = () => {
     setNumberArr(randomArr());
   };
 
+  // const installAndDelay = async (arr: TColumn[]) => {
+  //  setNumberArr([...arr]);
+  //  await delay(SHORT_DELAY_IN_MS);
+  // };
+
   const onClickSortDescending = () => {
     if (sortMode === "selection") {
       selectionSort(
         numberArr,
+        "descending",
         setNumberArr,
-        setInProgressDescent,
-        "descending"
+        setInProgressDescent
       );
     }
     if (sortMode === "bubble") {
-      bubbleSort(numberArr, setNumberArr, setInProgressDescent, "descending");
+      bubbleSort(numberArr, "descending", setNumberArr, setInProgressDescent);
     }
   };
 
   const onClickSortAscending = () => {
     if (sortMode === "selection") {
-      selectionSort(numberArr, setNumberArr, setInProgressAscent, "ascending");
+      selectionSort(numberArr, "ascending", setNumberArr, setInProgressAscent);
     }
 
     if (sortMode === "bubble") {
-      bubbleSort(numberArr, setNumberArr, setInProgressAscent, "ascending");
+      bubbleSort(numberArr, "ascending", setNumberArr, setInProgressDescent);
     }
   };
 
@@ -93,7 +98,7 @@ export const SortingPage: FC = () => {
             return (
               <Column
                 key={index}
-                index={item.number}
+                index={item.number!}
                 state={item.state}
                 extraClass={styles.column}
               />
