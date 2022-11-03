@@ -44,5 +44,9 @@ describe("Корректность отрисовки элемента", () => {
     const circle = render(<Circle tail={<Circle />} />);
     expect(circle).toMatchSnapshot();
   });
-  
+
+  it("с index", () => {
+    const circle = render(<Circle index={0} />);
+    expect(circle).toMatchSnapshot();
+  });
 });
