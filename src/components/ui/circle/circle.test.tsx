@@ -61,4 +61,9 @@ describe("Корректность отрисовки элемента", () => {
     expect(circle).toMatchSnapshot();
   });
 
+  it("в состоянии changing", () => {
+    const circle = render(<Circle state={ElementStates.Changing} />);
+    expect(circle).toMatchSnapshot();
+  });
+
 });
