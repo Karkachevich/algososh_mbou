@@ -2,19 +2,6 @@ import { Circle } from "./circle";
 import { ElementStates } from "../../../types/element-states";
 import { render } from "@testing-library/react";
 
-//Корректность отрисовки элемента
-//без буквы;
-//с буквами (Snapshot);
-//с head (Snapshot);
-//с react-элементом в head;
-//с tail;
-//с react-элементом в tail;
-//с index;
-//с пропом isSmall ===  true;
-//в состоянии default;
-//в состоянии changing;
-//в состоянии modified.
-
 describe("Корректность отрисовки элемента", () => {
   it("без буквы", () => {
     const circle = render(<Circle />);
@@ -66,4 +53,8 @@ describe("Корректность отрисовки элемента", () => {
     expect(circle).toMatchSnapshot();
   });
 
+  it("в состоянии modified", () => {
+    const circle = render(<Circle state={ElementStates.Modified} />);
+    expect(circle).toMatchSnapshot();
+  });
 });
