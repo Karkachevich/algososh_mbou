@@ -49,4 +49,10 @@ describe("Корректность отрисовки элемента", () => {
     const circle = render(<Circle index={0} />);
     expect(circle).toMatchSnapshot();
   });
+
+  it("с пропcом isSmall ===  true", () => {
+    const circle = render(<Circle isSmall={true} />);
+    expect(circle).toMatchSnapshot();
+  });
+
 });
