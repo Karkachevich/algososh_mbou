@@ -71,6 +71,7 @@ export const StringPage: FC = () => {
           extraClass={styles.button}
           onClick={reverse}
           isLoader={inProgress}
+          disabled={!inputValue}
         />
       </div>
       <ul className={styles.circles}>

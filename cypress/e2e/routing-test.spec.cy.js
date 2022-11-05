@@ -17,17 +17,14 @@ describe("открыть сайт", function () {
     { contains: "Связный список", pathname: "list" },
   ];
 
-  pages.forEach(page => {
+  pages.forEach((page) => {
     it(`открыть страницу ${page.contains}`, function () {
-        cy.get(`a[href*="/${page.pathname}"]`).click();
-        cy.contains(page.contains);
-        cy.location("pathname").should("eq", `/${page.pathname}`);
-        cy.get("button").contains("К оглавлению").click();
-        cy.contains("МБОУ АЛГОСОШ");
-        cy.location("pathname").should("eq", "/");
-      });
-
-  })
-
- 
+      cy.get(`a[href*="/${page.pathname}"]`).click();
+      cy.contains(page.contains);
+      cy.location("pathname").should("eq", `/${page.pathname}`);
+      cy.get("button").contains("К оглавлению").click();
+      cy.contains("МБОУ АЛГОСОШ");
+      cy.location("pathname").should("eq", "/");
+    });
+  });
 });
