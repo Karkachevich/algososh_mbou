@@ -50,7 +50,7 @@ export const QueuePage: FC = () => {
     newArr[tail.index].tail = "tail";
     newArr[tail.index].value = tail.value;
     newArr[tail.index].state = ElementStates.Changing;
-   
+
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr[tail.index].state = ElementStates.Default;
@@ -69,16 +69,17 @@ export const QueuePage: FC = () => {
     } else {
       queue.dequeue();
       const head = queue.getHead();
+
+      newArr[head.index - 1].state = ElementStates.Changing;
+      setCharsArr([...newArr]);
       if (head.index > 0) {
         newArr[head.index - 1] = { value: "", head: "" };
       }
+      await delay(SHORT_DELAY_IN_MS);
       newArr[head.index].head = "head";
       newArr[head.index].value = head.value;
-      newArr[head.index].state = ElementStates.Changing;
-      
-      setCharsArr([...newArr]);
-      await delay(SHORT_DELAY_IN_MS);
       newArr[head.index].state = ElementStates.Default;
+
       setCharsArr([...newArr]);
     }
 
