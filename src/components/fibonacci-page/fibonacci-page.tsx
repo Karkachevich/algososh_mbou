@@ -49,10 +49,11 @@ export const FibonacciPage: React.FC = () => {
           onChange={onChange}
         />
         <Button
-          text="Развернуть"
+          text="Рассчитать"
           extraClass={styles.button}
           onClick={() => fibonacci(inputValue)}
           isLoader={inProgress}
+          disabled={!inputValue}
         />
       </div>
       <ul className={styles.circles}>
