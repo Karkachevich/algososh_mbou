@@ -34,4 +34,22 @@ describe("страница Очередь", function () {
     cy.get("@buttonDeleteByIndex").should("not.be.disabled");
     cy.get("@inputIndex").clear();
   });
+
+  it("корректность отрисовки дефолтного списка", function(){
+    cy.get('div[class^="circle_circle"').should("have.length", 4).each(($el)=>{
+        expect($el[0].textContent).to.not.equal('')
+    })
+  })
+
+
 });
+
+/**
+ * отрисовки дефолтного списка.
+добавления элемента в head.
+добавления элемента в tail.
+добавления элемента по индексу.
+удаления элемента из head.
+удаления элемента из tail.
+удаления элемента по индексу.
+ */
