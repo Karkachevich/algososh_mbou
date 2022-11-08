@@ -13,14 +13,6 @@ describe("страница Очередь", function () {
     cy.get("@button").should("be.disabled");
   });
 
-  /**
-   * Проверьте, правильность добавления элемента в очередь.
-   * Необходимо убедиться, что цвета элементов меняются и каждый шаг
-   * анимации отрабатывает корректно. Не забудьте проверить,
-   * что курсоры head и tail отрисовываются корректно.
-   *
-   */
-
   it("правильность добавления элемента", function () {
     cy.contains("Добавить").as("button");
     cy.get("input").type("1");
@@ -101,7 +93,7 @@ describe("страница Очередь", function () {
     cy.contains("Очистить").as("remove");
     cy.get("@remove").click();
     cy.get('div[class^="circle_circle"').each(($div) => {
-        expect($div).to.contain("")
-    })
+      expect($div).to.contain("");
+    });
   });
 });
