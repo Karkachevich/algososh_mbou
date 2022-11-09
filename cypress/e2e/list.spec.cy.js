@@ -10,7 +10,6 @@ describe("страница Очередь", function () {
     cy.contains("Добавить в tail").as("buttonAddTail");
     cy.contains("Добавить по индексу").as("buttonAddByIndex");
     cy.contains("Удалить по индексу").as("buttonDeleteByIndex");
-    
 
     cy.get("@inputText").should("have.value", "");
 
@@ -234,9 +233,48 @@ describe("страница Очередь", function () {
     });
   });
 
+  it("корректность удаления элемента по индексу", function () {
+    cy.get("input:last").as("inputIndex");
+    cy.contains("Удалить по индексу").as("button");
 
+    cy.get("@inputIndex").type("2");
+    cy.get("@button").click();
+
+    cy.get('div[class^="circle_circle"').eq(0).should(($div) => {
+      expect($div)
+      .attr("class")
+      .to.match(/circle_changing__/);
+    })
+   
+   
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"').eq(1).should(($div) => {
+      expect($div)
+      .attr("class")
+      .to.match(/circle_changing__/);
+    })
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"').eq(2).should(($div) => {
+      expect($div)
+      .attr("class")
+      .to.match(/circle_changing__/);
+    })
+    cy.wait(500)
+
+    cy.get('div[class*="circle_small"').eq(0).should(($div) => {
+      expect($div)
+        .to.have.text("2")
+        .attr("class")
+        .to.match(/circle_changing__/);
+    });
+
+    cy.get('div[class*="circle_head"').should(($div) => {
+      expect($div.eq(0)).to.have.text("head");
+    });
+
+    cy.get('div[class*="circle_tail"').should(($div) => {
+      expect($div.eq(3)).to.have.text("tail");
+    });
+  });
 });
 
-/**
-удаления элемента по индексу.
- */
