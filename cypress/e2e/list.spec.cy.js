@@ -5,11 +5,12 @@ describe("страница Очередь", function () {
 
   it("состояние кнопок", function () {
     cy.get("input:first").as("inputText");
+    cy.get("input:last").as("inputIndex");
     cy.contains("Добавить в head").as("buttonAddHead");
     cy.contains("Добавить в tail").as("buttonAddTail");
     cy.contains("Добавить по индексу").as("buttonAddByIndex");
     cy.contains("Удалить по индексу").as("buttonDeleteByIndex");
-    cy.get("input:last").as("inputIndex");
+    
 
     cy.get("@inputText").should("have.value", "");
 
@@ -177,9 +178,65 @@ describe("страница Очередь", function () {
       expect($div.eq(3)).to.have.text("tail");
     });
   });
+
+  it("корректность добавления элемента по индексу", function () {
+    cy.get("input:first").as("inputText");
+    cy.get("input:last").as("inputIndex");
+    cy.contains("Добавить по индексу").as("buttonAddIndex");
+    cy.get("@inputText").type("2");
+    cy.get("@inputIndex").type("2");
+    cy.get("@buttonAddIndex").click();
+
+    cy.get('div[class*="circle_small"').should(($div) => {
+      expect($div.eq(0))
+        .to.have.text("2")
+        .attr("class")
+        .to.match(/circle_changing__/);
+    });
+    cy.wait(1000);
+    cy.get('div[class*="circle_small"').should(($div) => {
+      expect($div.eq(0))
+        .to.have.text("2")
+        .attr("class")
+        .to.match(/circle_changing__/);
+    });
+    cy.wait(1000);
+    cy.get('div[class*="circle_small"').should(($div) => {
+      expect($div.eq(0))
+        .to.have.text("2")
+        .attr("class")
+        .to.match(/circle_changing__/);
+    });
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"')
+      .should("have.length", 5)
+      .should(($div) => {
+        expect($div.eq(2))
+          .to.have.text("2")
+          .attr("class")
+          .to.match(/circle_modified__/);
+      });
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"')
+      .should("have.length", 5)
+      .should(($div) => {
+        expect($div.eq(2))
+          .to.have.text("2")
+          .attr("class")
+          .to.match(/circle_default__/);
+      });
+    cy.get('div[class*="circle_head"').should(($div) => {
+      expect($div.eq(0)).to.have.text("head");
+    });
+
+    cy.get('div[class*="circle_tail"').should(($div) => {
+      expect($div.eq(4)).to.have.text("tail");
+    });
+  });
+
+
 });
 
 /**
-добавления элемента по индексу.
 удаления элемента по индексу.
  */
