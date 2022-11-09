@@ -113,10 +113,48 @@ describe("страница Очередь", function () {
       expect($div.eq(3)).to.contain("tail");
     });
   });
+
+  it("корректность добавления элемента в tail", function () {
+    cy.get("input:first").as("inputText");
+    cy.contains("Добавить в tail").as("buttonAddTail");
+    cy.get("@inputText").type("5");
+    cy.get("@buttonAddTail").click();
+
+    cy.get('div[class*="circle_small"').should(($div) => {
+      expect($div.eq(0))
+        .to.contain("5")
+        .attr("class")
+        .to.match(/circle_changing__/);
+    });
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"')
+      .should("have.length", 5)
+      .should(($div) => {
+        expect($div.eq(4))
+          .to.contain("5")
+          .attr("class")
+          .to.match(/circle_modified__/);
+      });
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"')
+      .should("have.length", 5)
+      .should(($div) => {
+        expect($div.eq(4))
+          .to.contain("5")
+          .attr("class")
+          .to.match(/circle_default__/);
+      });
+    cy.get('div[class*="circle_head"').should(($div) => {
+      expect($div.eq(0)).to.contain("head");
+    });
+
+    cy.get('div[class*="circle_tail"').should(($div) => {
+      expect($div.eq(4)).to.contain("tail");
+    });
+  });
 });
 
 /**
-добавления элемента в tail.
 добавления элемента по индексу.
 удаления элемента из tail.
 удаления элемента по индексу.
