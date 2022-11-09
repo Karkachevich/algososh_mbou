@@ -23,12 +23,12 @@ describe("страница Последовательность Фибоначч
    
     cy.wait(5000)
     cy.get('div[class^="circle_circle"').should(($div) => {
-      expect($div.eq(0)).to.contain("1");
-      expect($div.eq(1)).to.contain("1");
-      expect($div.eq(2)).to.contain("2");
-      expect($div.eq(3)).to.contain("3");
-      expect($div.eq(4)).to.contain("5");
-      expect($div.eq(5)).to.contain("8");
+      expect($div.eq(0)).to.have.text("1");
+      expect($div.eq(1)).to.have.text("1");
+      expect($div.eq(2)).to.have.text("2");
+      expect($div.eq(3)).to.have.text("3");
+      expect($div.eq(4)).to.have.text("5");
+      expect($div.eq(5)).to.have.text("8");
     });
   });
 });

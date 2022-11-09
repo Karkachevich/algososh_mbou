@@ -19,7 +19,7 @@ describe("страница Стек", function () {
     cy.get("@button").click();
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -28,7 +28,7 @@ describe("страница Стек", function () {
     cy.wait(500);
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_default__/);
     });
@@ -37,7 +37,7 @@ describe("страница Стек", function () {
 
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -45,13 +45,13 @@ describe("страница Стек", function () {
 
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_default__/);
     });
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("");
-      expect($div.eq(1)).to.contain("top");
+      expect($div.eq(0)).to.have.text("");
+      expect($div.eq(1)).to.have.text("top");
     });
   });
 
@@ -61,7 +61,7 @@ describe("страница Стек", function () {
     cy.get('div[class^="circle_circle"').should("have.length", 2);
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -69,14 +69,14 @@ describe("страница Стек", function () {
     cy.get('div[class^="circle_circle"').should("have.length", 1);
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_default__/);
     });
     cy.get("@button").click();
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });

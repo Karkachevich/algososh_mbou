@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { TColumn } from "../../types/column";
 import { ElementStates } from "../../types/element-states";
 import { delay } from "../../utils/delay";

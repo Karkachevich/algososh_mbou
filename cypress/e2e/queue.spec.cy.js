@@ -19,7 +19,7 @@ describe("страница Очередь", function () {
     cy.get("@button").click();
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -28,7 +28,7 @@ describe("страница Очередь", function () {
     cy.wait(500);
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_default__/);
     });
@@ -36,26 +36,26 @@ describe("страница Очередь", function () {
     cy.get("@button").click();
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_changing__/);
     });
     cy.wait(500);
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_default__/);
     });
 
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("head");
-      expect($div.eq(1)).to.contain("");
+      expect($div.eq(0)).to.have.text("head");
+      expect($div.eq(1)).to.have.text("");
     });
 
     cy.get('div[class*="circle_tail"').should(($div) => {
-      expect($div.eq(0)).to.contain("");
-      expect($div.eq(1)).to.contain("tail");
+      expect($div.eq(0)).to.have.text("");
+      expect($div.eq(1)).to.have.text("tail");
     });
   });
 
@@ -64,20 +64,20 @@ describe("страница Очередь", function () {
     cy.get("@delete").click();
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
     cy.wait(500);
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("")
+        .to.have.text("")
         .attr("class")
         .to.match(/circle_default__/);
     });
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("");
-      expect($div.eq(1)).to.contain("head");
+      expect($div.eq(0)).to.have.text("");
+      expect($div.eq(1)).to.have.text("head");
     });
     cy.get("@delete").click();
   });
@@ -93,7 +93,7 @@ describe("страница Очередь", function () {
     cy.contains("Очистить").as("remove");
     cy.get("@remove").click();
     cy.get('div[class^="circle_circle"').each(($div) => {
-      expect($div).to.contain("");
+      expect($div).to.have.text("");
     });
   });
 });
