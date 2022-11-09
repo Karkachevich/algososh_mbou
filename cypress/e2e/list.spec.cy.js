@@ -42,11 +42,11 @@ describe("страница Очередь", function () {
         expect($div[0].textContent).to.not.equal("");
       });
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("head");
+      expect($div.eq(0)).to.have.text("head");
     });
 
     cy.get('div[class*="circle_tail"').should(($div) => {
-      expect($div.eq(3)).to.contain("tail");
+      expect($div.eq(3)).to.have.text("tail");
     });
   });
 
@@ -58,7 +58,7 @@ describe("страница Очередь", function () {
 
     cy.get('div[class*="circle_small"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -67,7 +67,7 @@ describe("страница Очередь", function () {
       .should("have.length", 5)
       .should(($div) => {
         expect($div.eq(0))
-          .to.contain("1")
+          .to.have.text("1")
           .attr("class")
           .to.match(/circle_modified__/);
       });
@@ -76,16 +76,16 @@ describe("страница Очередь", function () {
       .should("have.length", 5)
       .should(($div) => {
         expect($div.eq(0))
-          .to.contain("1")
+          .to.have.text("1")
           .attr("class")
           .to.match(/circle_default__/);
       });
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("head");
+      expect($div.eq(0)).to.have.text("head");
     });
 
     cy.get('div[class*="circle_tail"').should(($div) => {
-      expect($div.eq(4)).to.contain("tail");
+      expect($div.eq(4)).to.have.text("tail");
     });
   });
 
@@ -94,23 +94,23 @@ describe("страница Очередь", function () {
     cy.get("@button").click();
     cy.get('div[class*="circle_small"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
     cy.get('div[class^="circle_circle"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("")
+        .to.have.text("")
         .attr("class")
         .to.match(/circle_default__/);
     });
     cy.wait(500);
     cy.get('div[class^="circle_circle"').should("have.length", 4);
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("head");
+      expect($div.eq(0)).to.have.text("head");
     });
     cy.get('div[class*="circle_tail"').should(($div) => {
-      expect($div.eq(3)).to.contain("tail");
+      expect($div.eq(3)).to.have.text("tail");
     });
   });
 
@@ -122,7 +122,7 @@ describe("страница Очередь", function () {
 
     cy.get('div[class*="circle_small"').should(($div) => {
       expect($div.eq(0))
-        .to.contain("5")
+        .to.have.text("5")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -131,7 +131,7 @@ describe("страница Очередь", function () {
       .should("have.length", 5)
       .should(($div) => {
         expect($div.eq(4))
-          .to.contain("5")
+          .to.have.text("5")
           .attr("class")
           .to.match(/circle_modified__/);
       });
@@ -140,22 +140,46 @@ describe("страница Очередь", function () {
       .should("have.length", 5)
       .should(($div) => {
         expect($div.eq(4))
-          .to.contain("5")
+          .to.have.text("5")
           .attr("class")
           .to.match(/circle_default__/);
       });
     cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("head");
+      expect($div.eq(0)).to.have.text("head");
     });
 
     cy.get('div[class*="circle_tail"').should(($div) => {
-      expect($div.eq(4)).to.contain("tail");
+      expect($div.eq(4)).to.have.text("tail");
+    });
+  });
+
+  it("корректность удаления элемента из tail", function () {
+    cy.contains("Удалить из tail").as("button");
+    cy.get("@button").click();
+    cy.get('div[class*="circle_small"').should(($div) => {
+      expect($div.eq(0))
+        .to.have.text("5")
+        .attr("class")
+        .to.match(/circle_changing__/);
+    });
+    cy.get('div[class^="circle_circle"').should(($div) => {
+      expect($div.eq(4))
+        .to.have.text("")
+        .attr("class")
+        .to.match(/circle_default__/);
+    });
+    cy.wait(500);
+    cy.get('div[class^="circle_circle"').should("have.length", 4);
+    cy.get('div[class*="circle_head"').should(($div) => {
+      expect($div.eq(0)).to.have.text("head");
+    });
+    cy.get('div[class*="circle_tail"').should(($div) => {
+      expect($div.eq(3)).to.have.text("tail");
     });
   });
 });
 
 /**
 добавления элемента по индексу.
-удаления элемента из tail.
 удаления элемента по индексу.
  */
