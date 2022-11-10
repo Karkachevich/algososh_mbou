@@ -38,20 +38,24 @@ export const StackPage: FC = () => {
 
     newArr.map((item) => (item.head = ""));
 
-    setCharsArr(newArr);
+    setCharsArr([...newArr]);
     newArr[position].head = "top";
     newArr[position].state = ElementStates.Changing;
 
-    setCharsArr(newArr);
+    setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr[position].state = ElementStates.Default;
-    setCharsArr(newArr);
+    setCharsArr([...newArr]);
     setInProgressAdd(false);
   };
 
   const pop = async () => {
     setInProgressDelete(true);
-    charsArr[charsArr.length - 1].state = ElementStates.Changing;
+
+    charsArr[charsArr.length - 1] = {
+      ...charsArr[charsArr.length - 1],
+      state: ElementStates.Changing,
+    };
     setCharsArr(charsArr);
     await delay(SHORT_DELAY_IN_MS);
 
@@ -59,12 +63,16 @@ export const StackPage: FC = () => {
     const newArr = stack.getElemets();
 
     if (newArr.length > 0) {
-      newArr[newArr.length - 1].head = "top";
-      newArr[newArr.length - 1].state = ElementStates.Default; 
-      setCharsArr(newArr);
+      newArr[newArr.length - 1] = {
+        ...newArr[newArr.length - 1],
+        head: "top",
+        state: ElementStates.Default,
+      };
+
+      setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
       newArr[newArr.length - 1].state = ElementStates.Default;
-      setCharsArr(newArr);
+      setCharsArr([...newArr]);
     } else {
       clear();
       setInProgressDelete(false);

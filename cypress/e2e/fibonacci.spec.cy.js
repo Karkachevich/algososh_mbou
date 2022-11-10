@@ -1,6 +1,6 @@
 describe("страница Последовательность Фибоначчи", function () {
   before(function () {
-    cy.visit("http://localhost:3000/fibonacci");
+    cy.visit("/fibonacci");
   });
 
   it("состояние кнопки", function () {

@@ -354,7 +354,7 @@ export const ListPage: FC = () => {
           text="Удалить по индексу"
           extraClass={styles.button_index}
           onClick={removeFromIndex}
-          disabled={!inputIndex || disabled}
+          disabled={!inputIndex || disabled || inputIndex >= charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveFromIndex}
         />
       </div>
