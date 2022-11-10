@@ -323,14 +323,14 @@ export const ListPage: FC = () => {
           text="Удалить из head"
           extraClass={styles.button_list}
           onClick={removeHead}
-          disabled={disabled}
+          disabled={disabled || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveHead}
         />
         <Button
           text="Удалить из tail"
           extraClass={styles.button_list}
           onClick={removeTail}
-          disabled={disabled}
+          disabled={disabled || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveTail}
         />
       </div>
