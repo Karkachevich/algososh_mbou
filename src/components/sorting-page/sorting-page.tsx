@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
@@ -18,14 +18,14 @@ export const SortingPage: FC = () => {
   const disabled =
     inProgressAscent || inProgressDescent || numberArr.length === 0;
 
+    useEffect(() => {
+      setNumberArr(randomArr());
+    }, []);
+
   const onClickNewArr = () => {
     setNumberArr(randomArr());
   };
 
-  // const installAndDelay = async (arr: TColumn[]) => {
-  //  setNumberArr([...arr]);
-  //  await delay(SHORT_DELAY_IN_MS);
-  // };
 
   const onClickSortDescending = () => {
     if (sortMode === "selection") {
