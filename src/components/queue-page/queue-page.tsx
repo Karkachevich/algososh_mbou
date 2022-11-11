@@ -23,6 +23,7 @@ export const QueuePage: FC = () => {
   const [inProgressDenqueue, setInProgressDenqueue] = useState<boolean>(false);
   const [headIndex, setHeadIndex] = useState<number | null>(null);
   const queue = useMemo(() => new Queue<string>(size), []);
+  const maxLength: number = 4;
 
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -46,10 +47,13 @@ export const QueuePage: FC = () => {
     newArr[head.index] = { value: head.value, head: "head" };
     setHeadIndex(head.index);
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
-    newArr[tail.index].tail = "tail";
-    newArr[tail.index].value = tail.value;
-    newArr[tail.index].state = ElementStates.Changing;
-   
+    newArr[tail.index] = {
+      ...newArr[tail.index],
+      value: tail.value,
+      tail: "tail",
+      state: ElementStates.Changing,
+    };
+
     setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr[tail.index].state = ElementStates.Default;
@@ -68,16 +72,19 @@ export const QueuePage: FC = () => {
     } else {
       queue.dequeue();
       const head = queue.getHead();
+
+      newArr[head.index - 1].state = ElementStates.Changing;
+      setCharsArr([...newArr]);
       if (head.index > 0) {
         newArr[head.index - 1] = { value: "", head: "" };
       }
-      newArr[head.index].head = "head";
-      newArr[head.index].value = head.value;
-      newArr[head.index].state = ElementStates.Changing;
-      
-      setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
-      newArr[head.index].state = ElementStates.Default;
+      newArr[head.index] = {
+        ...newArr[head.index],
+        value: head.value,
+        head: "head",
+        state: ElementStates.Changing,
+      };
       setCharsArr([...newArr]);
     }
 
@@ -90,7 +97,7 @@ export const QueuePage: FC = () => {
         <Input
           extraClass={styles.input}
           type="text"
-          maxLength={4}
+          maxLength={maxLength}
           isLimitText={true}
           value={inputValue}
           onChange={onChange}

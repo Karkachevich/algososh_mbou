@@ -15,6 +15,7 @@ export const StringPage: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [charsArr, setCharsArr] = useState<TCircle[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
+  const maxLength: number = 11;
   
   const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -59,7 +60,7 @@ export const StringPage: FC = () => {
     <SolutionLayout title="Строка">
       <div className={styles.container}>
         <Input
-          maxLength={11}
+          maxLength={maxLength}
           extraClass={styles.input}
           isLimitText={true}
           value={inputValue}
@@ -70,6 +71,7 @@ export const StringPage: FC = () => {
           extraClass={styles.button}
           onClick={reverse}
           isLoader={inProgress}
+          disabled={!inputValue}
         />
       </div>
       <ul className={styles.circles}>

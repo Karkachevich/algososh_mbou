@@ -13,6 +13,9 @@ export const FibonacciPage: React.FC = () => {
   const [numbersArr, setNumberArr] = useState<number[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
 
+  const maxNumber: number = 19;
+  const minNumber: number = 0;
+
   const onChange = (evt: React.SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -20,7 +23,7 @@ export const FibonacciPage: React.FC = () => {
 
   const fibonacci = async (inputValue: string) => {
     const value = Number(inputValue);
-    if (value <= 0 || value > 19) {
+    if (value <= minNumber || value > maxNumber) {
       return 0;
     }
     const arrFibNums: number[] = getFibonacciNumbers(value);
@@ -39,17 +42,18 @@ export const FibonacciPage: React.FC = () => {
       <div className={styles.container}>
         <Input
           type=""
-          max={19}
+          max={maxNumber}
           extraClass={styles.input}
           isLimitText={true}
           value={inputValue}
           onChange={onChange}
         />
         <Button
-          text="Развернуть"
+          text="Рассчитать"
           extraClass={styles.button}
           onClick={() => fibonacci(inputValue)}
           isLoader={inProgress}
+          disabled={!inputValue}
         />
       </div>
       <ul className={styles.circles}>

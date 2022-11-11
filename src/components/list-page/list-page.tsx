@@ -37,6 +37,8 @@ export const ListPage: FC = () => {
     inProgressRemoveFromIndex: false,
   });
   const linkedList = useMemo(() => new LinkedListNode<TCircle>(randomArr), []);
+  const maxLengthValue: number = 4;
+  const maxLengthIndex: number = 1;
 
   useEffect(() => {
     setCharsArr(linkedList.print());
@@ -160,7 +162,7 @@ export const ListPage: FC = () => {
     };
     await installAndDelay(newArr);
     newArr.shift();
-    setCharsArr([...newArr]);
+    setCharsArr(newArr);
 
     setInProgressRemove({ inProgressRemoveHead: false, inProgress: false });
   };
@@ -181,7 +183,7 @@ export const ListPage: FC = () => {
     };
     await installAndDelay(newArr);
     newArr.pop();
-    setCharsArr([...newArr]);
+    setCharsArr(newArr);
     setInProgressRemove({ inProgressRemoveTail: false, inProgress: false });
   };
 
@@ -296,7 +298,7 @@ export const ListPage: FC = () => {
       <div className={styles.container}>
         <Input
           type="text"
-          maxLength={4}
+          maxLength={maxLengthValue}
           isLimitText={true}
           extraClass={styles.input}
           value={inputValue}
@@ -321,14 +323,14 @@ export const ListPage: FC = () => {
           text="Удалить из head"
           extraClass={styles.button_list}
           onClick={removeHead}
-          disabled={disabled}
+          disabled={disabled || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveHead}
         />
         <Button
           text="Удалить из tail"
           extraClass={styles.button_list}
           onClick={removeTail}
-          disabled={disabled}
+          disabled={disabled || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveTail}
         />
       </div>
@@ -336,7 +338,7 @@ export const ListPage: FC = () => {
         <Input
           placeholder="Введите индекс"
           extraClass={styles.input}
-          maxLength={1}
+          maxLength={maxLengthIndex}
           value={inputIndex || ""}
           onChange={onChangeIndex}
           disabled={disabled}
@@ -352,7 +354,7 @@ export const ListPage: FC = () => {
           text="Удалить по индексу"
           extraClass={styles.button_index}
           onClick={removeFromIndex}
-          disabled={!inputIndex || disabled}
+          disabled={!inputIndex || disabled || inputIndex >= charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveFromIndex}
         />
       </div>

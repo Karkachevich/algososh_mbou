@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
@@ -18,31 +18,36 @@ export const SortingPage: FC = () => {
   const disabled =
     inProgressAscent || inProgressDescent || numberArr.length === 0;
 
+    useEffect(() => {
+      setNumberArr(randomArr());
+    }, []);
+
   const onClickNewArr = () => {
     setNumberArr(randomArr());
   };
+
 
   const onClickSortDescending = () => {
     if (sortMode === "selection") {
       selectionSort(
         numberArr,
+        "descending",
         setNumberArr,
-        setInProgressDescent,
-        "descending"
+        setInProgressDescent
       );
     }
     if (sortMode === "bubble") {
-      bubbleSort(numberArr, setNumberArr, setInProgressDescent, "descending");
+      bubbleSort(numberArr, "descending", setNumberArr, setInProgressDescent);
     }
   };
 
   const onClickSortAscending = () => {
     if (sortMode === "selection") {
-      selectionSort(numberArr, setNumberArr, setInProgressAscent, "ascending");
+      selectionSort(numberArr, "ascending", setNumberArr, setInProgressAscent);
     }
 
     if (sortMode === "bubble") {
-      bubbleSort(numberArr, setNumberArr, setInProgressAscent, "ascending");
+      bubbleSort(numberArr, "ascending", setNumberArr, setInProgressDescent);
     }
   };
 
@@ -93,7 +98,7 @@ export const SortingPage: FC = () => {
             return (
               <Column
                 key={index}
-                index={item.number}
+                index={item.number!}
                 state={item.state}
                 extraClass={styles.column}
               />
