@@ -8,6 +8,7 @@ import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { Stack } from "./stack";
+import { TOP } from "../../constants/element-captions";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const StackPage: FC = () => {
@@ -31,7 +32,7 @@ export const StackPage: FC = () => {
     if (inputValue === "") return 0;
     stack.push({
       value: inputValue,
-      head: "top",
+      head: TOP,
     });
     const newArr = stack.getElemets();
     const position = newArr.length - 1;
@@ -39,7 +40,7 @@ export const StackPage: FC = () => {
     newArr.map((item) => (item.head = ""));
 
     setCharsArr([...newArr]);
-    newArr[position].head = "top";
+    newArr[position].head = TOP;
     newArr[position].state = ElementStates.Changing;
 
     setCharsArr([...newArr]);
@@ -65,7 +66,7 @@ export const StackPage: FC = () => {
     if (newArr.length > 0) {
       newArr[newArr.length - 1] = {
         ...newArr[newArr.length - 1],
-        head: "top",
+        head: TOP,
         state: ElementStates.Default,
       };
 
