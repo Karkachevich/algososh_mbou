@@ -8,6 +8,7 @@ import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { HEAD, TAIL } from "../../constants/element-captions";
 import { Queue } from "./queue";
 
 export const QueuePage: FC = () => {
@@ -44,13 +45,13 @@ export const QueuePage: FC = () => {
     queue.enqueue(inputValue);
     const head = queue.getHead();
     const tail = queue.getTail();
-    newArr[head.index] = { value: head.value, head: "head" };
+    newArr[head.index] = { value: head.value, head: HEAD };
     setHeadIndex(head.index);
     if (tail.index > 0) newArr[tail.index - 1].tail = "";
     newArr[tail.index] = {
       ...newArr[tail.index],
       value: tail.value,
-      tail: "tail",
+      tail: TAIL,
       state: ElementStates.Changing,
     };
 
@@ -82,7 +83,7 @@ export const QueuePage: FC = () => {
       newArr[head.index] = {
         ...newArr[head.index],
         value: head.value,
-        head: "head",
+        head: HEAD,
         state: ElementStates.Changing,
       };
       setCharsArr([...newArr]);
