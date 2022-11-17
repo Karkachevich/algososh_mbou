@@ -19,6 +19,7 @@ export const StackPage: FC = () => {
   const stack = useMemo(() => new Stack<TCircle>(), []);
 
   const disabled = charsArr.length === 0;
+  const disabledButtonClear = disabled || inProgressAdd || inProgressDelete;
   const maxLength: number = 4;
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -111,7 +112,7 @@ export const StackPage: FC = () => {
           disabled={disabled || inProgressAdd}
           isLoader={inProgressDelete}
         />
-        <Button text="Очистить" disabled={disabled || inProgressAdd || inProgressDelete} onClick={clear} />
+        <Button text="Очистить" disabled={disabledButtonClear} onClick={clear} />
       </div>
       <div className={styles.circles}>
         {!!charsArr &&
