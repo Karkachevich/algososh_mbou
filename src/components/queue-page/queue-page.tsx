@@ -25,7 +25,8 @@ export const QueuePage: FC = () => {
   const [headIndex, setHeadIndex] = useState<number | null>(null);
   const queue = useMemo(() => new Queue<string>(size), []);
   const maxLength: number = 4;
-
+  const disabledButtonClear =
+    inProgressEnqueue || inProgressDenqueue || headIndex === null;
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -124,9 +125,7 @@ export const QueuePage: FC = () => {
         <Button
           text="Очистить"
           onClick={clear}
-          disabled={
-            inProgressEnqueue || inProgressDenqueue || headIndex === null
-          }
+          disabled={disabledButtonClear}
         />
       </div>
       <div className={styles.circles}>
