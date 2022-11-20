@@ -27,6 +27,10 @@ export const QueuePage: FC = () => {
   const maxLength: number = 4;
   const disabledButtonClear =
     inProgressEnqueue || inProgressDenqueue || headIndex === null;
+  const disabledButtonAdd =
+    inProgressDenqueue ||
+    !inputValue ||
+    charsArr[charsArr.length - 1].value !== "";
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -108,11 +112,7 @@ export const QueuePage: FC = () => {
           text="Добавить"
           extraClass={styles.button_add}
           onClick={enqueue}
-          disabled={
-            inProgressDenqueue ||
-            !inputValue ||
-            charsArr[charsArr.length - 1].value !== ""
-          }
+          disabled={disabledButtonAdd}
           isLoader={inProgressEnqueue}
         />
         <Button
