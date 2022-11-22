@@ -51,7 +51,7 @@ export const ListPage: FC = () => {
 
   const disabled =
     inProgressInsertion.inProgress || inProgressRemove.inProgress;
-
+  const disabledButtonAddIndex = !inputValue || !inputIndex || disabled || inputIndex >= charsArr.length;
   const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -347,7 +347,7 @@ export const ListPage: FC = () => {
           text="Добавить по индексу"
           extraClass={styles.button_index}
           onClick={addByIndex}
-          disabled={!inputValue || !inputIndex || disabled}
+          disabled={disabledButtonAddIndex}
           isLoader={inProgressInsertion?.inProgressAddByIndex}
         />
         <Button
