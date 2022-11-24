@@ -51,7 +51,10 @@ export const ListPage: FC = () => {
 
   const disabled =
     inProgressInsertion.inProgress || inProgressRemove.inProgress;
-  const disabledButtonAddIndex = !inputValue || !inputIndex || disabled || inputIndex >= charsArr.length;
+  const disabledButtonAddIndex =
+    !inputValue || !inputIndex || disabled || inputIndex >= charsArr.length;
+  const disabledButtonDeleteIndex =
+    !inputIndex || disabled || inputIndex >= charsArr.length;
   const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -70,7 +73,7 @@ export const ListPage: FC = () => {
     };
 
     const newArr = linkedList.print();
-   
+
     const position = 0;
 
     newArr[position] = {
@@ -94,8 +97,8 @@ export const ListPage: FC = () => {
       state: ElementStates.Modified,
     });
 
-    if(linkedList.getSize() === 0){
-        newArr.pop();
+    if (linkedList.getSize() === 0) {
+      newArr.pop();
     }
 
     linkedList.insertAt(element, position);
@@ -354,7 +357,7 @@ export const ListPage: FC = () => {
           text="Удалить по индексу"
           extraClass={styles.button_index}
           onClick={removeFromIndex}
-          disabled={!inputIndex || disabled || inputIndex >= charsArr.length}
+          disabled={disabledButtonDeleteIndex}
           isLoader={inProgressRemove.inProgressRemoveFromIndex}
         />
       </div>
