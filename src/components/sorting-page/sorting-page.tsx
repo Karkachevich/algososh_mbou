@@ -15,7 +15,7 @@ export const SortingPage: FC = () => {
   const [inProgressAscent, setInProgressAscent] = useState<boolean>(false);
   const [inProgressDescent, setInProgressDescent] = useState<boolean>(false);
 
-  const disabled =
+  const disabledRadioInput =
     inProgressAscent || inProgressDescent || numberArr.length === 0;
 
     useEffect(() => {
@@ -60,7 +60,7 @@ export const SortingPage: FC = () => {
           value="selection"
           checked={sortMode === "selection"}
           onChange={() => setSortMode("selection")}
-          disabled={disabled}
+          disabled={disabledRadioInput}
         />
         <RadioInput
           label="Пузырёк"
@@ -68,7 +68,7 @@ export const SortingPage: FC = () => {
           value="bubble"
           checked={sortMode === "bubble"}
           onChange={() => setSortMode("bubble")}
-          disabled={disabled}
+          disabled={disabledRadioInput}
         />
         <Button
           text="По возрастанию"
