@@ -49,12 +49,12 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
   };
 
-  const disabled =
+  const disabledInput =
     inProgressInsertion.inProgress || inProgressRemove.inProgress;
   const disabledButtonAddIndex =
-    !inputValue || !inputIndex || disabled || inputIndex >= charsArr.length;
+    !inputValue || !inputIndex || disabledInput || inputIndex >= charsArr.length;
   const disabledButtonDeleteIndex =
-    !inputIndex || disabled || inputIndex >= charsArr.length;
+    !inputIndex || disabledInput || inputIndex >= charsArr.length;
   const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -306,34 +306,34 @@ export const ListPage: FC = () => {
           extraClass={styles.input}
           value={inputValue}
           onChange={onChangeValue}
-          disabled={disabled}
+          disabled={disabledInput}
         />
         <Button
           text="Добавить в head"
           extraClass={styles.button_list}
           onClick={addInHead}
-          disabled={!inputValue || disabled}
+          disabled={!inputValue || disabledInput}
           isLoader={inProgressInsertion?.inProgressAddHead}
         />
         <Button
           text="Добавить в tail"
           extraClass={styles.button_list}
           onClick={addInTail}
-          disabled={!inputValue || disabled}
+          disabled={!inputValue || disabledInput}
           isLoader={inProgressInsertion?.inProgressAddTail}
         />
         <Button
           text="Удалить из head"
           extraClass={styles.button_list}
           onClick={removeHead}
-          disabled={disabled || !charsArr.length}
+          disabled={disabledInput || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveHead}
         />
         <Button
           text="Удалить из tail"
           extraClass={styles.button_list}
           onClick={removeTail}
-          disabled={disabled || !charsArr.length}
+          disabled={disabledInput || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveTail}
         />
       </div>
@@ -344,7 +344,7 @@ export const ListPage: FC = () => {
           maxLength={maxLengthIndex}
           value={inputIndex || ""}
           onChange={onChangeIndex}
-          disabled={disabled}
+          disabled={disabledInput}
         />
         <Button
           text="Добавить по индексу"
