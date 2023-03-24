@@ -49,9 +49,12 @@ export const ListPage: FC = () => {
     await delay(SHORT_DELAY_IN_MS);
   };
 
-  const disabled =
+  const disabledInput =
     inProgressInsertion.inProgress || inProgressRemove.inProgress;
-
+  const disabledButtonAddIndex =
+    !inputValue || !inputIndex || disabledInput || inputIndex >= charsArr.length;
+  const disabledButtonDeleteIndex =
+    !inputIndex || disabledInput || inputIndex >= charsArr.length;
   const onChangeValue = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
     setInputValue(element);
@@ -70,7 +73,7 @@ export const ListPage: FC = () => {
     };
 
     const newArr = linkedList.print();
-   
+
     const position = 0;
 
     newArr[position] = {
@@ -94,8 +97,8 @@ export const ListPage: FC = () => {
       state: ElementStates.Modified,
     });
 
-    if(linkedList.getSize() === 0){
-        newArr.pop();
+    if (linkedList.getSize() === 0) {
+      newArr.pop();
     }
 
     linkedList.insertAt(element, position);
@@ -303,34 +306,34 @@ export const ListPage: FC = () => {
           extraClass={styles.input}
           value={inputValue}
           onChange={onChangeValue}
-          disabled={disabled}
+          disabled={disabledInput}
         />
         <Button
           text="Добавить в head"
           extraClass={styles.button_list}
           onClick={addInHead}
-          disabled={!inputValue || disabled}
+          disabled={!inputValue || disabledInput}
           isLoader={inProgressInsertion?.inProgressAddHead}
         />
         <Button
           text="Добавить в tail"
           extraClass={styles.button_list}
           onClick={addInTail}
-          disabled={!inputValue || disabled}
+          disabled={!inputValue || disabledInput}
           isLoader={inProgressInsertion?.inProgressAddTail}
         />
         <Button
           text="Удалить из head"
           extraClass={styles.button_list}
           onClick={removeHead}
-          disabled={disabled}
+          disabled={disabledInput || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveHead}
         />
         <Button
           text="Удалить из tail"
           extraClass={styles.button_list}
           onClick={removeTail}
-          disabled={disabled}
+          disabled={disabledInput || !charsArr.length}
           isLoader={inProgressRemove.inProgressRemoveTail}
         />
       </div>
@@ -341,20 +344,20 @@ export const ListPage: FC = () => {
           maxLength={maxLengthIndex}
           value={inputIndex || ""}
           onChange={onChangeIndex}
-          disabled={disabled}
+          disabled={disabledInput}
         />
         <Button
           text="Добавить по индексу"
           extraClass={styles.button_index}
           onClick={addByIndex}
-          disabled={!inputValue || !inputIndex || disabled}
+          disabled={disabledButtonAddIndex}
           isLoader={inProgressInsertion?.inProgressAddByIndex}
         />
         <Button
           text="Удалить по индексу"
           extraClass={styles.button_index}
           onClick={removeFromIndex}
-          disabled={!inputIndex || disabled}
+          disabled={disabledButtonDeleteIndex}
           isLoader={inProgressRemove.inProgressRemoveFromIndex}
         />
       </div>

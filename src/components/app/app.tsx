@@ -6,13 +6,12 @@ import { MainPage } from "../main-page/main-page";
 import { QueuePage } from "../queue-page/queue-page";
 import { StringPage } from "../string-page/string-page";
 import { SortingPage } from "../sorting-page/sorting-page";
+import style from "./app.module.css"
 import { StackPage } from "../stack-page/stack-page";
-
-import "./app.css";
 
 function App() {
   return (
-    <div className="app">
+    <div className={style.app}>
       <BrowserRouter>
         <Switch>
           <Route path="/" exact>

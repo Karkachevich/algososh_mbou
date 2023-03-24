@@ -1,6 +1,11 @@
+import {
+  DIV_CLASS_CIRCLE,
+  DIV_CLASS_CIRCLE_HEAD,
+} from "../../src/constants/div-class.ts";
+
 describe("страница Стек", function () {
   before(function () {
-    cy.visit("http://localhost:3000/stack");
+    cy.visit("/stack");
   });
 
   it("состояние кнопки", function () {
@@ -17,71 +22,71 @@ describe("страница Стек", function () {
     cy.contains("Добавить").as("button");
     cy.get("input").type("1");
     cy.get("@button").click();
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
-    cy.get('div[class*="circle_head"').should("have.text", "top");
+    cy.get(DIV_CLASS_CIRCLE_HEAD).should("have.text", "top");
 
     cy.wait(500);
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_default__/);
     });
     cy.get("input").type("2");
     cy.get("@button").click();
 
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_changing__/);
     });
     cy.wait(500);
 
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_default__/);
     });
-    cy.get('div[class*="circle_head"').should(($div) => {
-      expect($div.eq(0)).to.contain("");
-      expect($div.eq(1)).to.contain("top");
+    cy.get(DIV_CLASS_CIRCLE_HEAD).should(($div) => {
+      expect($div.eq(0)).to.have.text("");
+      expect($div.eq(1)).to.have.text("top");
     });
   });
 
   it("Правильность удаления элемента", function () {
     cy.contains("Удалить").as("button");
     cy.get("@button").click();
-    cy.get('div[class^="circle_circle"').should("have.length", 2);
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should("have.length", 2);
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(1))
-        .to.contain("2")
+        .to.have.text("2")
         .attr("class")
         .to.match(/circle_changing__/);
     });
     cy.wait(1000);
-    cy.get('div[class^="circle_circle"').should("have.length", 1);
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should("have.length", 1);
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_default__/);
     });
     cy.get("@button").click();
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("1")
+        .to.have.text("1")
         .attr("class")
         .to.match(/circle_changing__/);
     });
     cy.wait(1000);
-    cy.get('div[class^="circle_circle"').should("have.length", 0);
+    cy.get(DIV_CLASS_CIRCLE).should("have.length", 0);
   });
 
   it("поведение кнопки «Очистить»", function () {
@@ -92,9 +97,9 @@ describe("страница Стек", function () {
     cy.get("@button").click();
     cy.get("input").type("3");
     cy.get("@button").click();
-    cy.get('div[class^="circle_circle"').should("have.length", 3);
+    cy.get(DIV_CLASS_CIRCLE).should("have.length", 3);
     cy.contains("Очистить").as("remove");
     cy.get("@remove").click();
-    cy.get('div[class^="circle_circle"').should("have.length", 0);
+    cy.get(DIV_CLASS_CIRCLE).should("have.length", 0);
   });
 });

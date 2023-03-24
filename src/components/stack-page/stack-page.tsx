@@ -8,6 +8,7 @@ import { ElementStates } from "../../types/element-states";
 import { TCircle } from "../../types/circle";
 import { delay } from "../../utils/delay";
 import { Stack } from "./stack";
+import { TOP } from "../../constants/element-captions";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const StackPage: FC = () => {
@@ -18,6 +19,7 @@ export const StackPage: FC = () => {
   const stack = useMemo(() => new Stack<TCircle>(), []);
 
   const disabled = charsArr.length === 0;
+  const disabledButtonClear = disabled || inProgressAdd || inProgressDelete;
   const maxLength: number = 4;
   const onChange = (evt: SyntheticEvent<HTMLInputElement, Event>) => {
     const element = evt.currentTarget.value;
@@ -31,27 +33,31 @@ export const StackPage: FC = () => {
     if (inputValue === "") return 0;
     stack.push({
       value: inputValue,
-      head: "top",
+      head: TOP,
     });
     const newArr = stack.getElemets();
     const position = newArr.length - 1;
 
     newArr.map((item) => (item.head = ""));
 
-    setCharsArr(newArr);
-    newArr[position].head = "top";
+    setCharsArr([...newArr]);
+    newArr[position].head = TOP;
     newArr[position].state = ElementStates.Changing;
 
-    setCharsArr(newArr);
+    setCharsArr([...newArr]);
     await delay(SHORT_DELAY_IN_MS);
     newArr[position].state = ElementStates.Default;
-    setCharsArr(newArr);
+    setCharsArr([...newArr]);
     setInProgressAdd(false);
   };
 
   const pop = async () => {
     setInProgressDelete(true);
-    charsArr[charsArr.length - 1].state = ElementStates.Changing;
+
+    charsArr[charsArr.length - 1] = {
+      ...charsArr[charsArr.length - 1],
+      state: ElementStates.Changing,
+    };
     setCharsArr(charsArr);
     await delay(SHORT_DELAY_IN_MS);
 
@@ -59,12 +65,16 @@ export const StackPage: FC = () => {
     const newArr = stack.getElemets();
 
     if (newArr.length > 0) {
-      newArr[newArr.length - 1].head = "top";
-      newArr[newArr.length - 1].state = ElementStates.Default; 
-      setCharsArr(newArr);
+      newArr[newArr.length - 1] = {
+        ...newArr[newArr.length - 1],
+        head: TOP,
+        state: ElementStates.Default,
+      };
+
+      setCharsArr([...newArr]);
       await delay(SHORT_DELAY_IN_MS);
       newArr[newArr.length - 1].state = ElementStates.Default;
-      setCharsArr(newArr);
+      setCharsArr([...newArr]);
     } else {
       clear();
       setInProgressDelete(false);
@@ -102,7 +112,7 @@ export const StackPage: FC = () => {
           disabled={disabled || inProgressAdd}
           isLoader={inProgressDelete}
         />
-        <Button text="Очистить" disabled={disabled || inProgressAdd || inProgressDelete} onClick={clear} />
+        <Button text="Очистить" disabled={disabledButtonClear} onClick={clear} />
       </div>
       <div className={styles.circles}>
         {!!charsArr &&

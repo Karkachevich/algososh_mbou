@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
@@ -15,17 +15,17 @@ export const SortingPage: FC = () => {
   const [inProgressAscent, setInProgressAscent] = useState<boolean>(false);
   const [inProgressDescent, setInProgressDescent] = useState<boolean>(false);
 
-  const disabled =
+  const disabledRadioInput =
     inProgressAscent || inProgressDescent || numberArr.length === 0;
+
+    useEffect(() => {
+      setNumberArr(randomArr());
+    }, []);
 
   const onClickNewArr = () => {
     setNumberArr(randomArr());
   };
 
-  // const installAndDelay = async (arr: TColumn[]) => {
-  //  setNumberArr([...arr]);
-  //  await delay(SHORT_DELAY_IN_MS);
-  // };
 
   const onClickSortDescending = () => {
     if (sortMode === "selection") {
@@ -60,7 +60,7 @@ export const SortingPage: FC = () => {
           value="selection"
           checked={sortMode === "selection"}
           onChange={() => setSortMode("selection")}
-          disabled={disabled}
+          disabled={disabledRadioInput}
         />
         <RadioInput
           label="Пузырёк"
@@ -68,7 +68,7 @@ export const SortingPage: FC = () => {
           value="bubble"
           checked={sortMode === "bubble"}
           onChange={() => setSortMode("bubble")}
-          disabled={disabled}
+          disabled={disabledRadioInput}
         />
         <Button
           text="По возрастанию"

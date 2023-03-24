@@ -1,6 +1,7 @@
+import { DIV_CLASS_CIRCLE } from "../../src/constants/div-class.ts";
 describe("страница Строка", function () {
   before(function () {
-    cy.visit("http://localhost:3000/recursion");
+    cy.visit("/recursion");
   });
 
   it("состояние кнопки", function () {
@@ -19,21 +20,21 @@ describe("страница Строка", function () {
     cy.get("@button").click();
   });
   it("строка разворачивается корректно на первой секунде", function () {
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("w")
+        .to.have.text("w")
         .attr("class")
         .to.match(/circle_changing__/);
       expect($div.eq(1))
-        .to.contain("o")
+        .to.have.text("o")
         .attr("class")
         .to.match(/circle_default__/);
       expect($div.eq(2))
-        .to.contain("r")
+        .to.have.text("r")
         .attr("class")
         .to.match(/circle_default__/);
       expect($div.eq(3))
-        .to.contain("d")
+        .to.have.text("d")
         .attr("class")
         .to.match(/circle_changing__/);
     });
@@ -41,21 +42,21 @@ describe("страница Строка", function () {
 
   it("строка разворачивается корректно на второй секунде", function () {
     cy.wait(1000);
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("d")
+        .to.have.text("d")
         .attr("class")
         .to.match(/circle_modified__/);
       expect($div.eq(1))
-        .to.contain("o")
+        .to.have.text("o")
         .attr("class")
         .to.match(/circle_default__/);
       expect($div.eq(2))
-        .to.contain("r")
+        .to.have.text("r")
         .attr("class")
         .to.match(/circle_default__/);
       expect($div.eq(3))
-        .to.contain("w")
+        .to.have.text("w")
         .attr("class")
         .to.match(/circle_modified__/);
     });
@@ -63,21 +64,21 @@ describe("страница Строка", function () {
 
   it("строка разворачивается корректно на третьей секунде", function () {
     cy.wait(1000);
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("d")
+        .to.have.text("d")
         .attr("class")
         .to.match(/circle_modified__/);
       expect($div.eq(1))
-        .to.contain("o")
+        .to.have.text("o")
         .attr("class")
         .to.match(/circle_changing__/);
       expect($div.eq(2))
-        .to.contain("r")
+        .to.have.text("r")
         .attr("class")
         .to.match(/circle_changing__/);
       expect($div.eq(3))
-        .to.contain("w")
+        .to.have.text("w")
         .attr("class")
         .to.match(/circle_modified__/);
     });
@@ -85,24 +86,23 @@ describe("страница Строка", function () {
 
   it("строка разворачивается корректно конечный результат", function () {
     cy.wait(1000);
-    cy.get('div[class^="circle_circle"').should(($div) => {
+    cy.get(DIV_CLASS_CIRCLE).should(($div) => {
       expect($div.eq(0))
-        .to.contain("d")
+        .to.have.text("d")
         .attr("class")
         .to.match(/circle_modified__/);
       expect($div.eq(1))
-        .to.contain("r")
+        .to.have.text("r")
         .attr("class")
         .to.match(/circle_modified__/);
       expect($div.eq(2))
-        .to.contain("o")
+        .to.have.text("o")
         .attr("class")
         .to.match(/circle_modified__/);
       expect($div.eq(3))
-        .to.contain("w")
+        .to.have.text("w")
         .attr("class")
         .to.match(/circle_modified__/);
-    });    
+    });
   });
-
 });
