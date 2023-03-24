@@ -10,10 +10,6 @@
 
 На этом экране разворачивается строка.
 
-<video>
-    <source src="https://code.s3.yandex.net/web-plus/algoritms-video/12mes2.mp4" type="video/mp4">
-</video>
-
 **Компоненты**
 
 Добавлены основные компоненты:
